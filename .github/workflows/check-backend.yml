@@ -25,10 +25,11 @@ jobs:
           distribution: oracle
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
-
+    steps:
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          mysql root password: root
       - name: Execute Gradle Tests
         run: |
           cd MedHeadBackEnd
           ./gradlew test
-        with:
-          mysql root password: root
