@@ -1,2 +1,1 @@
-rootProject.name = "MedHeadBackEnd"
-
+rootProject.name = "emergency"
