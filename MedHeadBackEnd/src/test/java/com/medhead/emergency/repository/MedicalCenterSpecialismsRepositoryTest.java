@@ -30,7 +30,7 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
         assertEquals(51.379997253417969, medicalCenter.getLatitude());
         assertEquals(-0.40604206919670105, medicalCenter.getLongitude());
-        assertNotNull(medicalCenter.getSpeciality());
+        assertFalse(medicalCenter.getSpecialities().isEmpty());
     }
 
     @Test

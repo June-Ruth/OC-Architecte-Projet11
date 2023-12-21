@@ -90,7 +90,14 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         medicalCenter.setPostcode(postcode);
         medicalCenter.setLatitude(latitude);
         medicalCenter.setLongitude(longitude);
-        medicalCenter.setSpeciality(Speciality.randomSpeciality());
+        List<Speciality> specialities = new ArrayList<>();
+        Speciality speciality1 = Speciality.randomSpeciality();
+        Speciality speciality2 = Speciality.randomSpeciality();
+        Speciality speciality3 = Speciality.randomSpeciality();
+        specialities.add(speciality1);
+        specialities.add(speciality2);
+        specialities.add(speciality3);
+        medicalCenter.setSpecialities(specialities);
         return medicalCenter;
     }
 }
