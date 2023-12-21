@@ -2,6 +2,9 @@ package com.medhead.emergency.entity;
 
 public class MedicalCenter {
 
+    public MedicalCenter() {
+    }
+
     public MedicalCenter(int organisationIdP, String organisationNameP, String address1P, String address2P, String address3P, String cityP, String countyP, String postcodeP, String latitudeP, String longitudeP) {
         organisationId = organisationIdP;
         organisationName = organisationNameP;
