@@ -1,6 +1,6 @@
 package com.medhead.emergency.service;
 
-public interface BedAvailability {
+public interface BedAvailabilityService {
 
     /**
      * Check if a bed is available for a given hospital.
