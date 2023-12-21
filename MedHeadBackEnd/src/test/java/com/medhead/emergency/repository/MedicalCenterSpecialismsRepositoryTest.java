@@ -7,8 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MedicalCenterSpecialismsRepositoryTest {
 
@@ -31,6 +30,7 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
         assertEquals(51.379997253417969, medicalCenter.getLatitude());
         assertEquals(-0.40604206919670105, medicalCenter.getLongitude());
+        assertNotNull(medicalCenter.getSpeciality());
     }
 
     @Test

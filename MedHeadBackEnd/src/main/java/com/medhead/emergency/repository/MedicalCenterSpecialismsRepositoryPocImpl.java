@@ -1,15 +1,14 @@
 package com.medhead.emergency.repository;
 
+import com.medhead.emergency.entity.HospitalCsvHeader;
 import com.medhead.emergency.entity.MedicalCenter;
+import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         List<MedicalCenter> medicalCenters = new ArrayList<>();
         try (reader) {
             CSVFormat csvFormat = CSVFormat.EXCEL.builder()
-                    .setHeader(Headers.class)
+                    .setHeader(HospitalCsvHeader.class)
                     .setSkipHeaderRecord(true)
                     .setDelimiter('¬')
                     .build();
@@ -69,16 +68,16 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
     }
 
     private MedicalCenter transformCsvToMedicalCenter(CSVRecord record) {
-        int id = Integer.parseInt(record.get(Headers.OrganisationID));
-        String name = record.get(Headers.OrganisationName);
-        String address1 = record.get(Headers.Address1);
-        String address2 = record.get(Headers.Address2);
-        String address3 = record.get(Headers.Address3);
-        String city = record.get(Headers.City);
-        String county = record.get(Headers.County);
-        String postcode = record.get(Headers.Postcode);
-        double latitude = isNotBlank(record.get(Headers.Latitude)) ? Double.parseDouble(record.get(Headers.Latitude)) : 0;
-        double longitude = isNotBlank(record.get(Headers.Latitude)) ? Double.parseDouble(record.get(Headers.Longitude)) : 0;
+        int id = Integer.parseInt(record.get(HospitalCsvHeader.OrganisationID));
+        String name = record.get(HospitalCsvHeader.OrganisationName);
+        String address1 = record.get(HospitalCsvHeader.Address1);
+        String address2 = record.get(HospitalCsvHeader.Address2);
+        String address3 = record.get(HospitalCsvHeader.Address3);
+        String city = record.get(HospitalCsvHeader.City);
+        String county = record.get(HospitalCsvHeader.County);
+        String postcode = record.get(HospitalCsvHeader.Postcode);
+        double latitude = isNotBlank(record.get(HospitalCsvHeader.Latitude)) ? Double.parseDouble(record.get(HospitalCsvHeader.Latitude)) : 0;
+        double longitude = isNotBlank(record.get(HospitalCsvHeader.Latitude)) ? Double.parseDouble(record.get(HospitalCsvHeader.Longitude)) : 0;
 
         MedicalCenter medicalCenter = new MedicalCenter();
         medicalCenter.setOrganisationId(id);
@@ -91,31 +90,7 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         medicalCenter.setPostcode(postcode);
         medicalCenter.setLatitude(latitude);
         medicalCenter.setLongitude(longitude);
+        medicalCenter.setSpeciality(Speciality.randomSpeciality());
         return medicalCenter;
-    }
-
-    private enum Headers {
-        OrganisationID,
-        OrganisationCode,
-        OrganisationType,
-        SubType,
-        Sector,
-        OrganisationStatus,
-        IsPimsManaged,
-        OrganisationName,
-        Address1,
-        Address2,
-        Address3,
-        City,
-        County,
-        Postcode,
-        Latitude,
-        Longitude,
-        ParentODSCode,
-        ParentName,
-        Phone,
-        Email,
-        Website,
-        Fax
     }
 }
