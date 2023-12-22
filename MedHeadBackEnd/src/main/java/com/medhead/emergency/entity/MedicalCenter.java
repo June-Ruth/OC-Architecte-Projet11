@@ -7,7 +7,7 @@ public class MedicalCenter {
     public MedicalCenter() {
     }
 
-    public MedicalCenter(int organisationIdP, String organisationNameP, String address1P, String address2P, String address3P, String cityP, String countyP, String postcodeP, double latitudeP, double longitudeP, List<Speciality> specialitiesP) {
+    public MedicalCenter(int organisationIdP, String organisationNameP, String address1P, String address2P, String address3P, String cityP, String countyP, String postcodeP, GeographicCoordinates geographicCoordinatesP, List<Speciality> specialitiesP) {
         organisationId = organisationIdP;
         organisationName = organisationNameP;
         address1 = address1P;
@@ -16,8 +16,7 @@ public class MedicalCenter {
         city = cityP;
         county = countyP;
         postcode = postcodeP;
-        latitude = latitudeP;
-        longitude = longitudeP;
+        geographicCoordinates = geographicCoordinatesP;
         specialities = specialitiesP;
     }
 
@@ -37,9 +36,7 @@ public class MedicalCenter {
 
     private String postcode;
 
-    private double latitude;
-
-    private double longitude;
+    GeographicCoordinates geographicCoordinates;
 
     private List<Speciality> specialities;
 
@@ -107,20 +104,12 @@ public class MedicalCenter {
         postcode = postcodeP;
     }
 
-    public double getLatitude() {
-        return latitude;
+    public GeographicCoordinates getGeographicCoordinates() {
+        return geographicCoordinates;
     }
 
-    public void setLatitude(double latitudeP) {
-        latitude = latitudeP;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitudeP) {
-        longitude = longitudeP;
+    public void setGeographicCoordinates(GeographicCoordinates geographicCoordinatesP) {
+        geographicCoordinates = geographicCoordinatesP;
     }
 
     public List<Speciality> getSpecialities() {

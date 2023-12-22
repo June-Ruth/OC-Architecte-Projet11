@@ -1,0 +1,25 @@
+package com.medhead.emergency.service;
+
+import com.medhead.emergency.entity.GeographicCoordinates;
+import com.medhead.emergency.entity.MedicalCenter;
+
+import java.util.List;
+
+public interface TravelTimeCalculator {
+
+    /**
+     * Calculate the travel time by driving between two geographic points.
+     * @param departure geographic coordinates
+     * @param arrival geographic coordinates
+     * @return time in seconds
+     */
+    int calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival);
+
+    /**
+     * Find the closest medical center depends on time travel by driving.
+     * @param medicalCenters
+     * @return closest medical center.
+     */
+    MedicalCenter findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters);
+
+}

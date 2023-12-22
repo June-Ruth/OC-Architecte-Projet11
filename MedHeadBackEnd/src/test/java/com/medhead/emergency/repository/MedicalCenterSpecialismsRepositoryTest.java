@@ -30,8 +30,8 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("Walton-on-Thames", medicalCenter.getCity());
         assertEquals("Surrey", medicalCenter.getCounty());
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
-        assertEquals(51.379997253417969, medicalCenter.getLatitude());
-        assertEquals(-0.40604206919670105, medicalCenter.getLongitude());
+        assertEquals(51.379997253417969, medicalCenter.getGeographicCoordinates().getLatitude());
+        assertEquals(-0.40604206919670105, medicalCenter.getGeographicCoordinates().getLongitude());
         assertEquals(3, medicalCenter.getSpecialities().size());
     }
 

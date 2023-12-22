@@ -1,5 +1,6 @@
 package com.medhead.emergency.repository;
 
+import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.HospitalCsvHeader;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
@@ -100,8 +101,7 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         medicalCenter.setCity(city);
         medicalCenter.setCounty(county);
         medicalCenter.setPostcode(postcode);
-        medicalCenter.setLatitude(latitude);
-        medicalCenter.setLongitude(longitude);
+        medicalCenter.setGeographicCoordinates(new GeographicCoordinates(latitude, longitude));
         List<Speciality> specialities = new ArrayList<>();
         Speciality speciality1 = Speciality.randomSpeciality();
         Speciality speciality2 = Speciality.randomSpeciality();
