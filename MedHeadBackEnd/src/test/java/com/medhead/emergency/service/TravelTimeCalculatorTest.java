@@ -40,6 +40,7 @@ public class TravelTimeCalculatorTest {
         // Estimated time by Google Maps = 12 minutes => Test if travel time is between 10 and 15 min
         assertTrue(600 < travelTime);
         assertTrue(travelTime < 900);
+        System.out.println(travelTime);
     }
 
     @Test
@@ -47,4 +48,5 @@ public class TravelTimeCalculatorTest {
         MedicalCenter medicalCenter = travelTimeCalculator.findClosestMedicalCenter(testPosition, medicalCenters);
         assertEquals(medicalCenter3, medicalCenter);
     }
+
 }

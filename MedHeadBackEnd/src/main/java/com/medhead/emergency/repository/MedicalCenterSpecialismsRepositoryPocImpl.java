@@ -6,6 +6,7 @@ import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.stereotype.Repository;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import static org.apache.logging.log4j.util.Strings.isNotBlank;
  * This implementation is dedicated for POC usage only.
  * The production implementation should call directly the API for medical center specialisms.
  */
+@Repository
 public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterSpecialismsRepository {
 
 
