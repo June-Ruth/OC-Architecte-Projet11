@@ -12,6 +12,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
@@ -65,6 +66,17 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
             throw new RuntimeException(e);
         }
         return medicalCenters;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<MedicalCenter> findAllMedicalCentersBySpeciality(Speciality speciality) {
+        List<MedicalCenter> medicalCentersBySpeciality = findAllMedicalCenters().stream()
+                .filter(medicalCenter -> medicalCenter.getSpecialities().contains(speciality))
+                .toList();
+        return medicalCentersBySpeciality;
     }
 
     private MedicalCenter transformCsvToMedicalCenter(CSVRecord record) {

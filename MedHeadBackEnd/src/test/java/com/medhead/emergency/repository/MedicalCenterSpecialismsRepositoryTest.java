@@ -1,8 +1,10 @@
 package com.medhead.emergency.repository;
 
 import com.medhead.emergency.entity.MedicalCenter;
+import com.medhead.emergency.entity.Speciality;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 import java.io.IOException;
 import java.util.List;
@@ -30,7 +32,7 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
         assertEquals(51.379997253417969, medicalCenter.getLatitude());
         assertEquals(-0.40604206919670105, medicalCenter.getLongitude());
-        assertFalse(medicalCenter.getSpecialities().isEmpty());
+        assertEquals(3, medicalCenter.getSpecialities().size());
     }
 
     @Test
@@ -43,6 +45,13 @@ public class MedicalCenterSpecialismsRepositoryTest {
     void findAllMedicalCenterTest() {
         List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCenters();
         assertEquals(1165, medicalCenters.size());
+    }
+
+    @Test
+    void findAllMedicalCenterBySpecialityTest() {
+        List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCentersBySpeciality(Speciality.ANAESTHETICS);
+        assertTrue(medicalCenters.getFirst().getSpecialities().contains(Speciality.ANAESTHETICS));
+        assertTrue(medicalCenters.size() < 1165);
     }
 
 }
