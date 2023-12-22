@@ -4,15 +4,15 @@ package com.medhead.emergency.service;
  * This implementation is dedicated for POC usage only.
  * The production implementation should call directly the API for bed availability.
  */
-public class BedAvailabilityImplPoc implements BedAvailability {
+public class BedAvailabilityServicePocImpl implements BedAvailabilityService {
 
-    public BedAvailabilityImplPoc() {}
+    public BedAvailabilityServicePocImpl() {}
 
     /**
      * @inheritDoc
      */
     @Override
-    public boolean isBedAvailable(int hospitalId) {
+    public boolean isBedAvailable(int organisationId) {
         return true;
     }
 
@@ -20,7 +20,7 @@ public class BedAvailabilityImplPoc implements BedAvailability {
      * @inheritDoc
      */
     @Override
-    public boolean registerOneBedReservation(int hospitalId) {
+    public boolean registerOneBedReservation(int organisationId) {
         return true;
     }
 }
