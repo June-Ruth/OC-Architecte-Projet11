@@ -12,6 +12,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 @Service
 public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
@@ -39,8 +41,8 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            int times = new JSONObject(response.body()).getJSONArray("times").getJSONArray(0).getInt(0);
-            return times;
+            int time = new JSONObject(response.body()).getJSONArray("times").getJSONArray(0).getInt(0);
+            return time;
         } catch (JSONException | IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -51,6 +53,11 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
      */
     @Override
     public MedicalCenter findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters) {
-        return null;
+        TreeMap<Integer, MedicalCenter> closestMedicalCenters = new TreeMap<>();
+        for(MedicalCenter medicalCenter : medicalCenters) {
+            int time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
+            closestMedicalCenters.put(time, medicalCenter);
+        }
+        return closestMedicalCenters.firstEntry().getValue();
     }
 }
