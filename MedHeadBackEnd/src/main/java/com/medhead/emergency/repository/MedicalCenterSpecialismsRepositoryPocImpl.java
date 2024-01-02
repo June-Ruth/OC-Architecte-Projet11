@@ -1,10 +1,12 @@
 package com.medhead.emergency.repository;
 
+import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.HospitalCsvHeader;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.stereotype.Repository;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 
@@ -19,6 +22,7 @@ import static org.apache.logging.log4j.util.Strings.isNotBlank;
  * This implementation is dedicated for POC usage only.
  * The production implementation should call directly the API for medical center specialisms.
  */
+@Repository
 public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterSpecialismsRepository {
 
 
@@ -67,6 +71,17 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         return medicalCenters;
     }
 
+    /**
+     * @inheritDoc
+     */
+    @Override
+    public List<MedicalCenter> findAllMedicalCentersBySpeciality(Speciality speciality) {
+        List<MedicalCenter> medicalCentersBySpeciality = findAllMedicalCenters().stream()
+                .filter(medicalCenter -> medicalCenter.getSpecialities().contains(speciality))
+                .toList();
+        return medicalCentersBySpeciality;
+    }
+
     private MedicalCenter transformCsvToMedicalCenter(CSVRecord record) {
         int id = Integer.parseInt(record.get(HospitalCsvHeader.OrganisationID));
         String name = record.get(HospitalCsvHeader.OrganisationName);
@@ -88,8 +103,7 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
         medicalCenter.setCity(city);
         medicalCenter.setCounty(county);
         medicalCenter.setPostcode(postcode);
-        medicalCenter.setLatitude(latitude);
-        medicalCenter.setLongitude(longitude);
+        medicalCenter.setGeographicCoordinates(new GeographicCoordinates(latitude, longitude));
         List<Speciality> specialities = new ArrayList<>();
         Speciality speciality1 = Speciality.randomSpeciality();
         Speciality speciality2 = Speciality.randomSpeciality();
