@@ -2,7 +2,7 @@ package com.medhead.emergency.entity;
 
 import java.util.List;
 
-public class MedicalCenter {
+public class MedicalCenter implements Comparable<MedicalCenter>{
 
     public MedicalCenter() {
     }
@@ -120,4 +120,8 @@ public class MedicalCenter {
         specialities = specialityP;
     }
 
+    @Override
+    public int compareTo(MedicalCenter medicalCenter) {
+        return Integer.compare(organisationId, medicalCenter.getOrganisationId());
+    }
 }

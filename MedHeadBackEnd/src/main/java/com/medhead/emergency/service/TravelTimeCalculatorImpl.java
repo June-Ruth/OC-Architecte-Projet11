@@ -1,5 +1,6 @@
 package com.medhead.emergency.service;
 
+import com.google.common.collect.TreeMultimap;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
 import org.json.JSONException;
@@ -12,8 +13,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
 
 @Service
 public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
@@ -53,11 +52,13 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
      */
     @Override
     public MedicalCenter findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters) {
-        TreeMap<Integer, MedicalCenter> closestMedicalCenters = new TreeMap<>();
+        TreeMultimap<Integer, MedicalCenter> closestMedicalCenters = TreeMultimap.create();
         for(MedicalCenter medicalCenter : medicalCenters) {
-            int time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
-            closestMedicalCenters.put(time, medicalCenter);
+            if(medicalCenter.getGeographicCoordinates().getLongitude() != 0 && medicalCenter.getGeographicCoordinates().getLatitude() != 0) {
+                int time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
+                closestMedicalCenters.put(time, medicalCenter);
+            }
         }
-        return closestMedicalCenters.firstEntry().getValue();
+        return closestMedicalCenters.get(closestMedicalCenters.keySet().first()).first();
     }
 }
