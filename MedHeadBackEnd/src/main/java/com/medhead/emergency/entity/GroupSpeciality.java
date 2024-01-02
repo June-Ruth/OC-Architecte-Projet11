@@ -4,16 +4,16 @@ public enum GroupSpeciality {
 
     ANAESTHETICS("Anaesthetics"),
     CLINICAL_ONCOLOGY("Clinical oncology"),
-    DENTAL("Dental group"),
-    EMERGENCY_MEDICINE("Emergency medicine"),
-    GENERAL_MEDICINE("General medicine group"),
-    OBSTETRICS_GYNECOLOGY("Obstetrics & gynecology"),
-    PAEDIATRIC("Paediatric group"),
-    PATHOLOGY("Pathology group"),
-    PHM_CHS("PHM & CHS group"),
-    PSYCHIATRY("Psychiatry group"),
-    RADIOLOGY("Radiology group"),
-    SURGICAL("Surgical group");
+    DENTAL_GROUP("Dental group"),
+    EMERGENCY_MEDICINE("Emergency Medicine"),
+    GENERAL_MEDICINE_GROUP("General medicine group"),
+    OBSTETRICS_AND_GYNECOLOGY("Obstetrics & gynecology"),
+    PAEDIATRIC_GROUP("Paediatric group"),
+    PATHOLOGY_GROUP("Pathology group"),
+    PHM_AND_CHS_GROUP("PHM & CHS group"),
+    PSYCHIATRY_GROUP("Psychiatry group"),
+    RADIOLOGY_GROUP("Radiology group"),
+    SURGICAL_GROUP("Surgical group");
 
     public final String label;
 
