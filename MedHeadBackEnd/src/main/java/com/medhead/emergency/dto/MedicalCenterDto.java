@@ -1,14 +1,12 @@
-package com.medhead.emergency.entity;
+package com.medhead.emergency.dto;
+
+import com.medhead.emergency.entity.Speciality;
 
 import java.util.List;
 
-public class MedicalCenter implements Comparable<MedicalCenter>{
+public class MedicalCenterDto {
 
-    public MedicalCenter() {
-    }
-
-    public MedicalCenter(
-            int organisationIdP,
+    public MedicalCenterDto(
             String organisationNameP,
             String address1P,
             String address2P,
@@ -16,10 +14,9 @@ public class MedicalCenter implements Comparable<MedicalCenter>{
             String cityP,
             String countyP,
             String postcodeP,
-            GeographicCoordinates geographicCoordinatesP,
-            List<Speciality> specialitiesP
+            List<Speciality> specialitiesP,
+            int travelTimeP
     ) {
-        organisationId = organisationIdP;
         organisationName = organisationNameP;
         address1 = address1P;
         address2 = address2P;
@@ -27,11 +24,13 @@ public class MedicalCenter implements Comparable<MedicalCenter>{
         city = cityP;
         county = countyP;
         postcode = postcodeP;
-        geographicCoordinates = geographicCoordinatesP;
         specialities = specialitiesP;
+        travelTime = travelTimeP;
     }
 
-    private int organisationId;
+    public MedicalCenterDto() {
+
+    }
 
     private String organisationName;
 
@@ -47,17 +46,9 @@ public class MedicalCenter implements Comparable<MedicalCenter>{
 
     private String postcode;
 
-    GeographicCoordinates geographicCoordinates;
-
     private List<Speciality> specialities;
 
-    public int getOrganisationId() {
-        return organisationId;
-    }
-
-    public void setOrganisationId(int organisationIdP) {
-        organisationId = organisationIdP;
-    }
+    private int travelTime;
 
     public String getOrganisationName() {
         return organisationName;
@@ -115,24 +106,19 @@ public class MedicalCenter implements Comparable<MedicalCenter>{
         postcode = postcodeP;
     }
 
-    public GeographicCoordinates getGeographicCoordinates() {
-        return geographicCoordinates;
-    }
-
-    public void setGeographicCoordinates(GeographicCoordinates geographicCoordinatesP) {
-        geographicCoordinates = geographicCoordinatesP;
-    }
-
     public List<Speciality> getSpecialities() {
         return specialities;
     }
 
-    public void setSpecialities(List<Speciality> specialityP) {
-        specialities = specialityP;
+    public void setSpecialities(List<Speciality> specialitiesP) {
+        specialities = specialitiesP;
     }
 
-    @Override
-    public int compareTo(MedicalCenter medicalCenter) {
-        return Integer.compare(organisationId, medicalCenter.getOrganisationId());
+    public int getTravelTime() {
+        return travelTime;
+    }
+
+    public void setTravelTime(int travelTimeP) {
+        travelTime = travelTimeP;
     }
 }

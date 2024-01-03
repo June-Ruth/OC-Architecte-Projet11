@@ -2,7 +2,10 @@ package com.medhead.emergency.entity;
 
 public class GeographicCoordinates {
 
-    public GeographicCoordinates(double latitudeP, double longitudeP) {
+    public GeographicCoordinates(
+            double latitudeP,
+            double longitudeP
+    ) {
         latitude = latitudeP;
         longitude = longitudeP;
     }

@@ -2,6 +2,7 @@ package com.medhead.emergency.service;
 
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
+import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
 
 import java.util.List;
 
@@ -20,6 +21,6 @@ public interface TravelTimeCalculator {
      * @param medicalCenters
      * @return closest medical center.
      */
-    MedicalCenter findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters);
+    MedicalCenterWithTravelTime findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters);
 
 }
