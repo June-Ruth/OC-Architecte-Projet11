@@ -7,7 +7,18 @@ public class MedicalCenter implements Comparable<MedicalCenter>{
     public MedicalCenter() {
     }
 
-    public MedicalCenter(int organisationIdP, String organisationNameP, String address1P, String address2P, String address3P, String cityP, String countyP, String postcodeP, GeographicCoordinates geographicCoordinatesP, List<Speciality> specialitiesP) {
+    public MedicalCenter(
+            int organisationIdP,
+            String organisationNameP,
+            String address1P,
+            String address2P,
+            String address3P,
+            String cityP,
+            String countyP,
+            String postcodeP,
+            GeographicCoordinates geographicCoordinatesP,
+            List<Speciality> specialitiesP
+    ) {
         organisationId = organisationIdP;
         organisationName = organisationNameP;
         address1 = address1P;

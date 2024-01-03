@@ -6,7 +6,11 @@ import jakarta.persistence.*;
 @Table(name = "user")
 public class EmergencyUser {
 
-    public EmergencyUser(final String usernameP, final String passwordP, final String roleP) {
+    public EmergencyUser(
+            final String usernameP,
+            final String passwordP,
+            final String roleP
+    ) {
         username = usernameP;
         password = passwordP;
         role = roleP;
