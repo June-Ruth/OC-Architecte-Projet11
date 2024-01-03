@@ -3,6 +3,7 @@ package com.medhead.emergency.service;
 import com.google.common.collect.TreeMultimap;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
+import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
@@ -51,7 +53,7 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
      * @inheritDoc
      */
     @Override
-    public MedicalCenter findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters) {
+    public MedicalCenterWithTravelTime findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters) {
         TreeMultimap<Integer, MedicalCenter> closestMedicalCenters = TreeMultimap.create();
         for(MedicalCenter medicalCenter : medicalCenters) {
             if(medicalCenter.getGeographicCoordinates().getLongitude() != 0 && medicalCenter.getGeographicCoordinates().getLatitude() != 0) {
@@ -59,6 +61,8 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
                 closestMedicalCenters.put(time, medicalCenter);
             }
         }
-        return closestMedicalCenters.get(closestMedicalCenters.keySet().first()).first();
+        Map.Entry<Integer, MedicalCenter> closestMedicalCenter = closestMedicalCenters.entries().stream().findFirst().get();
+
+        return new MedicalCenterWithTravelTime(closestMedicalCenter.getValue(), closestMedicalCenter.getKey());
     }
 }

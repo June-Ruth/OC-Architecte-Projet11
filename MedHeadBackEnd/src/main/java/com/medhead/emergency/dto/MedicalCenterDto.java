@@ -1,6 +1,5 @@
 package com.medhead.emergency.dto;
 
-import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.Speciality;
 
 import java.util.List;
@@ -27,6 +26,10 @@ public class MedicalCenterDto {
         postcode = postcodeP;
         specialities = specialitiesP;
         travelTime = travelTimeP;
+    }
+
+    public MedicalCenterDto() {
+
     }
 
     private String organisationName;

@@ -2,6 +2,7 @@ package com.medhead.emergency.service;
 
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
+import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -45,8 +46,8 @@ public class TravelTimeCalculatorTest {
 
     @Test
     void findClosestMedicalCenterTest() {
-        MedicalCenter medicalCenter = travelTimeCalculator.findClosestMedicalCenter(testPosition, medicalCenters);
-        assertEquals(medicalCenter3, medicalCenter);
+        MedicalCenterWithTravelTime medicalCenterWithTravelTime = travelTimeCalculator.findClosestMedicalCenter(testPosition, medicalCenters);
+        assertEquals(medicalCenter3, medicalCenterWithTravelTime.getMedicalCenter());
     }
 
 }
