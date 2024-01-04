@@ -51,6 +51,8 @@ public class SetUpDataLoader implements ApplicationListener<ContextRefreshedEven
             if (!userService.checkUserByUsername(admin.getUsername())) {
                 userService.saveUser(admin);
             }
+
+
             alreadySetup = true;
         }
     }
