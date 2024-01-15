@@ -35,17 +35,13 @@ public class SpringSecurityConfiguration {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> {
-                    //auth.requestMatchers("/perform_login").permitAll();
-                    //auth.requestMatchers("/admin").hasRole("ADMIN");
-                    //auth.requestMatchers("/user").hasRole("USER");
-                    auth.anyRequest().permitAll();
+                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/admin").hasRole("ADMIN");
+                    auth.requestMatchers("/user").hasRole("USER");
+                    auth.anyRequest().authenticated();
+                    //auth.anyRequest().permitAll();
                 })
-                /*.formLogin(form ->
-                        form.loginProcessingUrl("/perform_login")
-                        .permitAll()
-                        .defaultSuccessUrl("/user")
-                )*/
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(webSiteConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(Customizer.withDefaults());
 
@@ -53,20 +49,17 @@ public class SpringSecurityConfiguration {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) throws Exception {
+    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder) {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setUserDetailsService(userService);
         authenticationProvider.setPasswordEncoder(bCryptPasswordEncoder);
-        /* AuthenticationManagerBuilder PauthenticationManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authenticationManagerBuilder.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
-        return authenticationManagerBuilder.build();*/
         return new ProviderManager(authenticationProvider);
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    CorsConfigurationSource webSiteConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://localhost:3000"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         configuration.setAllowedMethods(Arrays.asList("GET","POST"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

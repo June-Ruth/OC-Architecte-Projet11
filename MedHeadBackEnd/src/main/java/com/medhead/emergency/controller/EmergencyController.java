@@ -9,6 +9,7 @@ import com.medhead.emergency.entity.Speciality;
 import com.medhead.emergency.service.BedAvailabilityService;
 import com.medhead.emergency.service.MedicalCenterService;
 import com.medhead.emergency.service.TravelTimeCalculator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +37,7 @@ public class EmergencyController {
 
 
     @GetMapping("/emergency/hospital")
-    @ResponseBody
-    public MedicalCenterDto getMedicalCenterBySpecialityAndLocalisation(
+    public ResponseEntity<MedicalCenterDto> getMedicalCenterBySpecialityAndLocalisation(
             @RequestParam("speciality") Speciality speciality,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude
@@ -50,7 +50,10 @@ public class EmergencyController {
         MedicalCenterWithTravelTime closestMedicalCenter = travelTimeCalculator
                 .findClosestMedicalCenter(new GeographicCoordinates(latitude, longitude), medicalCentersBySpecialityWithAvailability);
 
-        return MedicalCenterDtoConverter.convertMedicalCenterWithTravelTimeToMedicalCenterDto(closestMedicalCenter);
+        MedicalCenterDto medicalCenterToSend = MedicalCenterDtoConverter.convertMedicalCenterWithTravelTimeToMedicalCenterDto(closestMedicalCenter);
+        System.out.println(medicalCenterToSend);
+
+        return ResponseEntity.ok(medicalCenterToSend);
     }
 
 }

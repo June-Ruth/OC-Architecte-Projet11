@@ -12,7 +12,7 @@ public interface TravelTimeCalculator {
      * Calculate the travel time by driving between two geographic points.
      * @param departure geographic coordinates
      * @param arrival geographic coordinates
-     * @return time in seconds
+     * @return time in milliseconds
      */
     int calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival);
 

@@ -39,8 +39,9 @@ public class TravelTimeCalculatorTest {
     void calculateTravelTimeBetweenTwoPointsTest() {
         int travelTime = travelTimeCalculator.calculateTravelTimeBetweenTwoPoints(testPosition, medicalCenter3.getGeographicCoordinates());
         // Estimated time by Google Maps = 12 minutes => Test if travel time is between 10 and 15 min
-        assertTrue(600 < travelTime);
-        assertTrue(travelTime < 900);
+        assertTrue(600000 < travelTime);
+        System.out.println(travelTime);
+        assertTrue(travelTime < 900000);
         System.out.println(travelTime);
     }
 

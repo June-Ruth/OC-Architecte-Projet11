@@ -1,68 +1,56 @@
 import {useState} from "react";
 
-function Emergency() {
+export default function Emergency() {
     /*const [speciality, setSpeciality] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");*/
 
-    const speciality = "ALLERGY";
-    const latitude = "53.135489";
-    const longitude = "-2.556205";
+    let base64 = require("base-64");
 
-    async function test()
-    {
-        await fetch(
-            "http://localhost:8080/user",
-            {
-                method: "GET",
-                mode: "no-cors",
-            }
-        )
-            .then((response) =>
-                {
-                    console.log(response.text);
-                    if (response.ok) {
-                        return response.text;
-                    }
-                    else {
-                        console.log("Test NOK")
-                        return Promise.reject("Test NOK");
-                    }
-                }
-            )
-            .catch((message) => {
-                    alert(message);
-                }
-            )
-    }
+    const speciality = "ALLERGY"; // for test only
+    const latitude = "53.135489"; // for test only
+    const longitude = "-2.556205"; // for test only
+
+    const username = "user"; // for test only
+    const password = "user"; // for test only
+
+    const [hospital, setHospital] = useState({
+        organisationName: "",
+        address1: "",
+        address2: "",
+        address3: "",
+        city: "",
+        county: "",
+        postcode: "",
+        specialities: [],
+        travelTime: 0
+    });
 
     async function findHospital() {
         const params = new URLSearchParams;
-        params.append('speciality', speciality);
-        params.append('latitude', latitude);
-        params.append('longitude', longitude);
-        /*{
-            speciality: speciality.toString(),
-            latitude: latitude.toString(),
-            longitude: longitude.toString()
-        }*/
+        params.append("speciality", speciality);
+        params.append("latitude", latitude);
+        params.append("longitude", longitude);
 
-        await fetch("http://localhost:8080/emergency/hospital?" + params.toString(), {
-            method: "GET",
-            mode: "no-cors",
+        const response = await fetch("http://localhost:8080/emergency/hospital?" + params.toString(), {
+            //mode:"no-cors",
+            credentials: "include",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Headers": "*"
             }
-        })
-            .then((response) => {
-                return Promise.all([response.json(), response.headers]);
-            })
-            .catch((message) => {
-                alert(message);
-            })
+        });
+
+        if(response.ok) {
+            const medicalCenter = await response.json();
+            console.log(medicalCenter);
+            setHospital(medicalCenter);
+        } else {
+            alert("Medical Center not Found");
+        }
     }
 
-    const emergencyForm = (
+    return (
         <div className="emergencyForm">
             <h1>Emergency</h1>
             <form>
@@ -73,10 +61,8 @@ function Emergency() {
                            placeholder="Speciality"
                            defaultValue={speciality} //for tests only
                            readOnly={true} //for tests only
-                        /*
-                        value={speciality}
-                        onChange={event => setSpeciality(event.target.value)}
-                        */
+                        //value={speciality}
+                        //onChange={event => setSpeciality(event.target.value)}
                     />
                 </label>
                 <br/><br/>
@@ -87,10 +73,8 @@ function Emergency() {
                            placeholder="Latitude"
                            defaultValue={latitude} //for tests only
                            readOnly={true} //for tests only
-                        /*
-                        value={latitude}
-                        onChange={event => setLatitude(event.target.value)}
-                         */
+                        //value={latitude}
+                        //onChange={event => setLatitude(event.target.value)}
                     />
                 </label>
                 <br/><br/>
@@ -101,18 +85,31 @@ function Emergency() {
                            placeholder="Longitude"
                            defaultValue={longitude} //for tests only
                            readOnly={true} //for tests only
-                        /*
-                        value={longitude}
-                        onChange={event => setLongitude(event.target.value)}
-                         */
+                        //value={longitude}
+                        //onChange={event => setLongitude(event.target.value)}
                     />
                 </label>
                 <br/><br/>
-                <button type='submit' onClick={test}>Find hospital</button>
+                <button type='button' onClick={findHospital}>Find hospital</button>
             </form>
+            <div className="hospitalResponse" hidden={hospital.organisationName === ""}>
+                <h2>Your Hospital</h2>
+                <p>{hospital.organisationName}</p>
+                <label><b>Address</b>
+                    <p>{hospital.address1}</p>
+                    <p>{hospital.address2}</p>
+                    <p>{hospital.address3}</p>
+                    <p>{hospital.city}</p>
+                    <p>{hospital.county}</p>
+                    <p>{hospital.postcode}</p>
+                </label>
+                <label><b>Specialities</b>
+                    <p>{hospital.specialities}</p>
+                </label>
+                <label><b>Travel Time</b>
+                    <p>{hospital.travelTime} ms</p>
+                </label>
+            </div>
         </div>
-    )
-    return emergencyForm;
+    );
 }
-
-export default Emergency

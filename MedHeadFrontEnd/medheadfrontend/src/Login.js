@@ -1,32 +1,27 @@
 import {useEffect, useState} from "react";
+import Emergency from "./Emergency";
 
-function Login() {
+export default function Login() {
     const [isLogin, setIsLogin] = useState(false);
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     async function signIn() {
-        const data = new URLSearchParams;
-        data.append('username', username);
-        data.append('password', password);
+        const params = new URLSearchParams;
+        params.append('username', username);
+        params.append('password', password);
 
-        await fetch("http://localhost:8080/perform_login", {
-            method: "GET",
-            mode: "no-cors",
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            body: data,
-        })
-            .then((response) => {
-                if (response.status === 200) {
-                    setIsLogin(true)
-                    return Promise.all([response.json(), response.headers]);
-                } else return Promise.reject("Invalid login attempt");
-            })
-            .catch((message) => {
-                alert(message);
-            })
+        const response = await fetch("http://localhost:8080/login?" + params.toString());
+
+        if(response.ok) {
+            setIsLogin(true);
+            const user = await response.json();
+            console.log(user);
+            const auth = response.headers.get("WWW-Authenticate");
+            console.log(auth);
+        } else {
+            alert("Identification failed")
+        }
     }
 
     const loginForm = (
@@ -49,12 +44,10 @@ function Login() {
                            onChange={event => setPassword(event.target.value)}/>
                 </label>
                 <br/>
-                <button type='submit' onClick={signIn}>Sign in</button>
+                <button type='button' onClick={signIn}>Sign in</button>
             </form>
         </div>
     )
 
-    return (isLogin ? <div>Login successfully</div> : loginForm)
+    return (isLogin ? <Emergency/> : loginForm)
 }
-
-export default Login

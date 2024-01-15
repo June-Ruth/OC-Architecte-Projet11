@@ -18,30 +18,31 @@ public class LoginController {
         authenticationManager = authenticationManagerP;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<Void> login(@RequestParam String username,
-                                      @RequestParam String password) {
+    @GetMapping("/login")
+    public ResponseEntity login(@RequestParam String username,
+                                @RequestParam String password) {
         Authentication authenticationRequest =
                 UsernamePasswordAuthenticationToken.unauthenticated(username, password);
         Authentication authenticationResponse =
                 authenticationManager.authenticate(authenticationRequest);
         if(authenticationResponse.isAuthenticated()) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(authenticationResponse);
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/user")
-    @CrossOrigin(origins = "http://localhost:3000")
     public ResponseEntity getUser() {
-        Map<String, String> map = new HashMap<>();
-        map.put("test", "test");
-        return ResponseEntity.ok(map);
+        Map<String, String> message = new HashMap<>();
+        message.put("message", "Welcome, User");
+        return ResponseEntity.ok(message);
     }
 
     @GetMapping("/admin")
-    public String getAdmin() {
-        return "Welcome, Admin";
+    public ResponseEntity getAdmin() {
+        Map<String, String> message = new HashMap<>();
+        message.put("message", "Welcome, Admin");
+        return ResponseEntity.ok(message);
     }
 }

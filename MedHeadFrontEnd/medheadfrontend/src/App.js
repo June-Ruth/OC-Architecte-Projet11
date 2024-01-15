@@ -2,8 +2,13 @@ import './App.css';
 import Login from "./Login";
 import Emergency from "./Emergency";
 
-function App() {
-  return <Emergency/>
+export default function App() {
+  return (
+      <div>
+        <Login/>
+      </div>
+
+  );
   /*return (
     <div className="App">
       <header className="App-header">
@@ -23,5 +28,3 @@ function App() {
     </div>
   );*/
 }
-
-export default App;
