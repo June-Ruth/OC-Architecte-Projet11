@@ -1,19 +1,18 @@
 package com.medhead.emergency.service;
 
 import com.google.common.collect.TreeMultimap;
+import com.graphhopper.GHRequest;
+import com.graphhopper.GHResponse;
+import com.graphhopper.GraphHopper;
+import com.graphhopper.config.CHProfile;
+import com.graphhopper.config.Profile;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -22,53 +21,28 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
     public TravelTimeCalculatorImpl() {
     }
 
-    private static final String URL = "https://graphhopper.com/api/1/";
-    private static final String DockerURL = "http://localhost:8989/route?";
-
-    private static final String KEY = "1a39e113-b490-46aa-bb5c-5142a3430c3d";
-
-    /**
-     * @inheritDoc
-     */
-    /*@Override
-    public int calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival) {
-        try(HttpClient client = HttpClient.newHttpClient()) {
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(URL + "matrix?from_point=" + departure.getLatitude() + "," + departure.getLongitude()
-                            + "&to_point=" + arrival.getLatitude() + "," + arrival.getLongitude()
-                            + "&type=json&profile=car&out_array=times&key=" + KEY))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            int time = new JSONObject(response.body()).getJSONArray("times").getJSONArray(0).getInt(0);
-            return time;
-        } catch (JSONException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
+    private static final String ENGLAND_FILE = "src/main/resources/static/england-latest.osm.pbf";
+    static GraphHopper getGraphHopperInstance() {
+        GraphHopper graphHopper = new GraphHopper();
+        graphHopper.setOSMFile(ENGLAND_FILE);
+        graphHopper.setGraphHopperLocation("target/routing-graph-cache");
+        graphHopper.setProfiles(new Profile("car").setVehicle("car").setTurnCosts(false));
+        graphHopper.getCHPreparationHandler().setCHProfiles(new CHProfile("car"));
+        graphHopper.importOrLoad();
+        return graphHopper;
+    }
 
     @Override
-    public int calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival) {
-        try(HttpClient client = HttpClient.newHttpClient()) {
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(DockerURL + "point=" + departure.getLatitude() + "," + departure.getLongitude()
-                            + "&point=" + arrival.getLatitude() + "," + arrival.getLongitude() + "&profile=car"))
-                    .GET()
-                    .build();
-
-            System.out.println(request);
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-
-            int time = new JSONObject(response.body()).getJSONArray("paths").getJSONObject(0).getInt("time");
-            return time;
-        } catch (JSONException | IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+    public long calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival) {
+        GraphHopper graphHopper = getGraphHopperInstance();
+        try {
+            GHRequest request = new GHRequest(departure.getLatitude(), departure.getLongitude(), arrival.getLatitude(), arrival.getLongitude())
+                    .setProfile("car")
+                    .setLocale(Locale.US);
+            GHResponse response = graphHopper.route(request);
+            return response.getBest().getTime();
+        } finally {
+            graphHopper.close();
         }
     }
 
@@ -80,8 +54,8 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
         TreeMultimap<Integer, MedicalCenter> closestMedicalCenters = TreeMultimap.create();
         for(MedicalCenter medicalCenter : medicalCenters) {
             if(medicalCenter.getGeographicCoordinates().getLongitude() != 0 && medicalCenter.getGeographicCoordinates().getLatitude() != 0) {
-                int time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
-                closestMedicalCenters.put(time, medicalCenter);
+                long time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
+                closestMedicalCenters.put((int) time, medicalCenter);
             }
         }
         Map.Entry<Integer, MedicalCenter> closestMedicalCenter = closestMedicalCenters.entries().stream().findFirst().get();

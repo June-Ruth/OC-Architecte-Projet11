@@ -26,6 +26,7 @@ dependencies {
 	implementation("org.apache.commons:commons-csv:1.10.0")
 	implementation("org.json:json:20231013")
 	implementation("com.google.guava:guava:33.0.0-jre")
+	implementation("com.graphhopper:graphhopper-core:8.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
@@ -41,4 +42,6 @@ dependencyManagement {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	minHeapSize = "512m"
+	maxHeapSize = "3096m"
 }

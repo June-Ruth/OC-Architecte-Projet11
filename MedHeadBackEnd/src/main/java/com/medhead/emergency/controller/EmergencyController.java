@@ -1,7 +1,7 @@
 package com.medhead.emergency.controller;
 
-import com.medhead.emergency.dto.MedicalCenterDto;
-import com.medhead.emergency.dto.converter.MedicalCenterDtoConverter;
+import com.medhead.emergency.dto.ReservationDto;
+import com.medhead.emergency.dto.converter.ReservationDtoConverter;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
@@ -35,9 +35,8 @@ public class EmergencyController {
 
     }
 
-
     @GetMapping("/emergency/hospital")
-    public ResponseEntity<MedicalCenterDto> getMedicalCenterBySpecialityAndLocalisation(
+    public ResponseEntity<ReservationDto> getMedicalCenterBySpecialityAndLocalisation(
             @RequestParam("speciality") Speciality speciality,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude
@@ -50,10 +49,12 @@ public class EmergencyController {
         MedicalCenterWithTravelTime closestMedicalCenter = travelTimeCalculator
                 .findClosestMedicalCenter(new GeographicCoordinates(latitude, longitude), medicalCentersBySpecialityWithAvailability);
 
-        MedicalCenterDto medicalCenterToSend = MedicalCenterDtoConverter.convertMedicalCenterWithTravelTimeToMedicalCenterDto(closestMedicalCenter);
-        System.out.println(medicalCenterToSend);
+        int reservationNumber = bedAvailabilityService.registerOneBedReservation(closestMedicalCenter.getMedicalCenter().getOrganisationId());
 
-        return ResponseEntity.ok(medicalCenterToSend);
+        ReservationDto reservation = ReservationDtoConverter.convertMedicalCenterWithTravelTimeToReservationDto(closestMedicalCenter, reservationNumber);
+        System.out.println(reservation);
+
+        return ResponseEntity.ok(reservation);
     }
 
 }

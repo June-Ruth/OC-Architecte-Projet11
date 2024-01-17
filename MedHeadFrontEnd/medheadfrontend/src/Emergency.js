@@ -1,9 +1,13 @@
 import {useState} from "react";
 
-export default function Emergency() {
+export default function Emergency({usernameP, passwordP}) {
     /*const [speciality, setSpeciality] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");*/
+    const [isSelectedHospital, setIsSelectedHospital] = useState(false);
+
+    const username = usernameP;
+    const password= passwordP;
 
     let base64 = require("base-64");
 
@@ -11,8 +15,6 @@ export default function Emergency() {
     const latitude = "53.135489"; // for test only
     const longitude = "-2.556205"; // for test only
 
-    const username = "user"; // for test only
-    const password = "user"; // for test only
 
     const [hospital, setHospital] = useState({
         organisationName: "",
@@ -22,11 +24,21 @@ export default function Emergency() {
         city: "",
         county: "",
         postcode: "",
-        specialities: [],
-        travelTime: 0
+        travelTime: 0,
+        reservationNumber : 0
     });
 
+    function emergencyInProgress() {
+        setIsSelectedHospital(true);
+    }
+
+    function newEmergency() {
+        setIsSelectedHospital(false);
+    }
+
     async function findHospital() {
+        console.log(username  + ":" +  password);
+
         const params = new URLSearchParams;
         params.append("speciality", speciality);
         params.append("latitude", latitude);
@@ -37,7 +49,9 @@ export default function Emergency() {
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Headers": "*"
+                "Access-Control-Allow-Headers": "*",
+                "Authorization": "Basic " + base64.encode(username + ":" + password),
+                "Origin": "http://localhost:3000/"
             }
         });
 
@@ -45,6 +59,7 @@ export default function Emergency() {
             const medicalCenter = await response.json();
             console.log(medicalCenter);
             setHospital(medicalCenter);
+            emergencyInProgress();
         } else {
             alert("Medical Center not Found");
         }
@@ -53,7 +68,7 @@ export default function Emergency() {
     return (
         <div className="emergencyForm">
             <h1>Emergency</h1>
-            <form>
+            <form hidden={isSelectedHospital}>
                 <label>Emergency Speciality
                     <br/>
                     <input type="text"
@@ -92,9 +107,14 @@ export default function Emergency() {
                 <br/><br/>
                 <button type='button' onClick={findHospital}>Find hospital</button>
             </form>
-            <div className="hospitalResponse" hidden={hospital.organisationName === ""}>
-                <h2>Your Hospital</h2>
-                <p>{hospital.organisationName}</p>
+
+            <div className="hospitalResponse" hidden={!isSelectedHospital}>
+                <button type='button' onClick={newEmergency}>New emergency</button>
+                <h2>Selected Hospital</h2>
+                <h3>{hospital.organisationName}</h3>
+                <p>Your reservation number is {hospital.reservationNumber}.<br/>
+                    Present it upon arrival.<br/>
+                    You arrival is expected in {hospital.travelTime} ms.</p>
                 <label><b>Address</b>
                     <p>{hospital.address1}</p>
                     <p>{hospital.address2}</p>
@@ -102,12 +122,6 @@ export default function Emergency() {
                     <p>{hospital.city}</p>
                     <p>{hospital.county}</p>
                     <p>{hospital.postcode}</p>
-                </label>
-                <label><b>Specialities</b>
-                    <p>{hospital.specialities}</p>
-                </label>
-                <label><b>Travel Time</b>
-                    <p>{hospital.travelTime} ms</p>
                 </label>
             </div>
         </div>

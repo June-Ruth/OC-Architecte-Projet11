@@ -4,9 +4,9 @@ import com.medhead.emergency.entity.Speciality;
 
 import java.util.List;
 
-public class MedicalCenterDto {
+public class ReservationDto {
 
-    public MedicalCenterDto(
+    public ReservationDto(
             String organisationNameP,
             String address1P,
             String address2P,
@@ -15,7 +15,8 @@ public class MedicalCenterDto {
             String countyP,
             String postcodeP,
             List<Speciality> specialitiesP,
-            int travelTimeP
+            long travelTimeP,
+            int reservationNumberP
     ) {
         organisationName = organisationNameP;
         address1 = address1P;
@@ -26,10 +27,10 @@ public class MedicalCenterDto {
         postcode = postcodeP;
         specialities = specialitiesP;
         travelTime = travelTimeP;
+        reservationNumber = reservationNumberP;
     }
 
-    public MedicalCenterDto() {
-
+    public ReservationDto() {
     }
 
     private String organisationName;
@@ -48,7 +49,9 @@ public class MedicalCenterDto {
 
     private List<Speciality> specialities;
 
-    private int travelTime;
+    private long travelTime;
+
+    private int reservationNumber;
 
     public String getOrganisationName() {
         return organisationName;
@@ -114,11 +117,19 @@ public class MedicalCenterDto {
         specialities = specialitiesP;
     }
 
-    public int getTravelTime() {
+    public long getTravelTime() {
         return travelTime;
     }
 
-    public void setTravelTime(int travelTimeP) {
+    public void setTravelTime(long travelTimeP) {
         travelTime = travelTimeP;
+    }
+
+    public int getReservationNumber() {
+        return reservationNumber;
+    }
+
+    public void setReservationNumber(int reservationNumberP) {
+        reservationNumber = reservationNumberP;
     }
 }

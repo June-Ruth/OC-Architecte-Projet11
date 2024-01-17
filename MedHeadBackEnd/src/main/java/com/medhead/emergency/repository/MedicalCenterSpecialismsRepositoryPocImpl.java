@@ -6,7 +6,6 @@ import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.springframework.stereotype.Repository;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class MedicalCenterSpecialismsRepositoryPocImpl implements MedicalCenterS
 
     private final MedicalCenterDataBase MEDICAL_CENTER_DB = MedicalCenterDataBaseManager.INSTANCE.getMEDICAL_CENTER_DB();
 
-    public MedicalCenterSpecialismsRepositoryPocImpl() throws IOException {
+    public MedicalCenterSpecialismsRepositoryPocImpl() {
     }
 
     /**

@@ -10,11 +10,12 @@ public interface TravelTimeCalculator {
 
     /**
      * Calculate the travel time by driving between two geographic points.
+     *
      * @param departure geographic coordinates
-     * @param arrival geographic coordinates
+     * @param arrival   geographic coordinates
      * @return time in milliseconds
      */
-    int calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival);
+    long calculateTravelTimeBetweenTwoPoints(GeographicCoordinates departure, GeographicCoordinates arrival);
 
     /**
      * Find the closest medical center depends on time travel by driving.

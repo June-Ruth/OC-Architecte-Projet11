@@ -52,7 +52,6 @@ public class SetUpDataLoader implements ApplicationListener<ContextRefreshedEven
                 userService.saveUser(admin);
             }
 
-
             alreadySetup = true;
         }
     }

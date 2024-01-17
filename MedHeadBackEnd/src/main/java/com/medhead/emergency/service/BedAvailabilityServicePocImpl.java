@@ -23,7 +23,7 @@ public class BedAvailabilityServicePocImpl implements BedAvailabilityService {
      * @inheritDoc
      */
     @Override
-    public boolean registerOneBedReservation(int organisationId) {
-        return true;
+    public int registerOneBedReservation(int organisationId) {
+        return 27;
     }
 }

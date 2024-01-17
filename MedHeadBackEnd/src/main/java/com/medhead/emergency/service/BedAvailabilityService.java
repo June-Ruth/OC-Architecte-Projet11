@@ -12,7 +12,7 @@ public interface BedAvailabilityService {
     /**
      * Register one bed in a given hospital.
      * @param organisationId, id of the given hospital
-     * @return true if the reservation succeed
+     * @return number of the reservation if succeed
      */
-    boolean registerOneBedReservation(int organisationId);
+    int registerOneBedReservation(int organisationId);
 }

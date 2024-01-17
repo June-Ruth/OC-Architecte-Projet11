@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import Emergency from "./Emergency";
 
 export default function Login() {
@@ -17,8 +17,8 @@ export default function Login() {
             setIsLogin(true);
             const user = await response.json();
             console.log(user);
+            console.log(username + ":" + password)
             const auth = response.headers.get("WWW-Authenticate");
-            console.log(auth);
         } else {
             alert("Identification failed")
         }
@@ -49,5 +49,5 @@ export default function Login() {
         </div>
     )
 
-    return (isLogin ? <Emergency/> : loginForm)
+    return (isLogin ? <Emergency usernameP={username} passwordP={password}/> : loginForm)
 }

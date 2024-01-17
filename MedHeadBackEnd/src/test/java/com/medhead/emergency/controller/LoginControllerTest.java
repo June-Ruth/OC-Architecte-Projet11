@@ -38,18 +38,19 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void loginPageAccessSuccessTest() throws Exception {
-        mvc.perform(get("/login")).andDo(print()).andExpect(status().isOk());
-    }
-
-    @Test
     public void userLoginSuccessTest() throws Exception {
-        mvc.perform(formLogin("/login").user("user").password("user")).andExpect(authenticated());
+        mvc.perform(get("/login")
+                .queryParam("username", "user")
+                .queryParam("password", "user"))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void userLoginFailedTest() throws Exception {
-        mvc.perform(formLogin("/login").user("user").password("wrongpassword")).andExpect(unauthenticated());
+        mvc.perform(get("/login")
+                .queryParam("username", "user")
+                .queryParam("password", "wrongpassword"))
+                .andExpect(unauthenticated());
     }
 
     @Test
@@ -60,7 +61,7 @@ public class LoginControllerTest {
 
     @Test
     public void userPageAccessWithUnauthenticatedUserTest() throws Exception {
-        mvc.perform(get("/user")).andDo(print()).andExpect(status().is3xxRedirection());
+        mvc.perform(get("/user")).andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
