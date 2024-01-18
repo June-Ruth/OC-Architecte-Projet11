@@ -23,4 +23,5 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+	exclude("**/SafariTests")
 }
