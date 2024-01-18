@@ -32,7 +32,6 @@ public class EmergencyController {
         medicalCenterService = medicalCenterServiceP;
         bedAvailabilityService = bedAvailabilityServiceP;
         travelTimeCalculator = travelTimeCalculatorP;
-
     }
 
     @GetMapping("/emergency/hospital")

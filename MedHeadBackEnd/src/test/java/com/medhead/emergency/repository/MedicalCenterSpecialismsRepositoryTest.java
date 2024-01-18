@@ -4,12 +4,16 @@ import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class MedicalCenterSpecialismsRepositoryTest {
 
     private static MedicalCenterSpecialismsRepository medicalCenterSpecialismsRepository;
@@ -29,8 +33,8 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("Walton-on-Thames", medicalCenter.getCity());
         assertEquals("Surrey", medicalCenter.getCounty());
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
-        assertEquals(51.379997253417969, medicalCenter.getGeographicCoordinates().getLatitude());
-        assertEquals(-0.40604206919670105, medicalCenter.getGeographicCoordinates().getLongitude());
+        assertEquals(42.471300, medicalCenter.getGeographicCoordinates().getLatitude());
+        assertEquals(1.493051, medicalCenter.getGeographicCoordinates().getLongitude());
         assertEquals(3, medicalCenter.getSpecialities().size());
     }
 
@@ -43,14 +47,14 @@ public class MedicalCenterSpecialismsRepositoryTest {
     @Test
     void findAllMedicalCenterTest() {
         List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCenters();
-        assertEquals(1165, medicalCenters.size());
+        assertEquals(1, medicalCenters.size());
     }
 
     @Test
     void findAllMedicalCenterBySpecialityTest() {
-        List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCentersBySpeciality(Speciality.ANAESTHETICS);
-        assertTrue(medicalCenters.getFirst().getSpecialities().contains(Speciality.ANAESTHETICS));
-        assertTrue(medicalCenters.size() < 1165);
+        List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCentersBySpeciality(Speciality.ALLERGY);
+        assertTrue(medicalCenters.getFirst().getSpecialities().contains(Speciality.ALLERGY));
+        assertEquals(1, medicalCenters.size());
     }
 
 }

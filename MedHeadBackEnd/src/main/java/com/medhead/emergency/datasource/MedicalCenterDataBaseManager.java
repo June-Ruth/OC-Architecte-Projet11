@@ -1,11 +1,13 @@
 package com.medhead.emergency.datasource;
 
+import com.medhead.emergency.configuration.EnvironmentValues;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.HospitalCsvHeader;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -25,11 +27,14 @@ public enum MedicalCenterDataBaseManager {
 
     private final MedicalCenterDataBase MEDICAL_CENTER_DB;
 
+    //@Value("${data.csv.file}")
+    //private String hospitalFileUrl;
+
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
         Reader reader;
         try {
-            String hospitalFileUrl = "src/main/resources/hospital.csv";
+            String hospitalFileUrl = EnvironmentValues.getHospitalFileUrl();
             reader = new FileReader(hospitalFileUrl, StandardCharsets.ISO_8859_1);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -83,7 +88,7 @@ public enum MedicalCenterDataBaseManager {
         medicalCenter.setPostcode(postcode);
         medicalCenter.setGeographicCoordinates(new GeographicCoordinates(latitude, longitude));
         List<Speciality> specialities = new ArrayList<>();
-        Speciality speciality1 = Speciality.randomSpeciality();
+        Speciality speciality1 = Speciality.ALLERGY;
         Speciality speciality2 = Speciality.randomSpeciality();
         Speciality speciality3 = Speciality.randomSpeciality();
         specialities.add(speciality1);

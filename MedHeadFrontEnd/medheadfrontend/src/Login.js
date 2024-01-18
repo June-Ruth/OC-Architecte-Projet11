@@ -25,26 +25,28 @@ export default function Login() {
     }
 
     const loginForm = (
-        <div className="form">
+        <div className="loginForm">
             <h1>Please sign in</h1>
-            <form>
+            <form id="loginForm">
                 <label>Username
-                    <input type='text'
-                           name='username'
+                    <input id="username"
+                           type="text"
+                           name="username"
                            placeholder="Username"
                            value={username}
                            onChange={event => setUsername(event.target.value)}/>
                 </label>
                 <br/>
                 <label>Password
-                    <input type='text'
-                           name='password'
+                    <input id="password"
+                           type="text"
+                           name="password"
                            placeholder="Password"
                            value={password}
                            onChange={event => setPassword(event.target.value)}/>
                 </label>
                 <br/>
-                <button type='button' onClick={signIn}>Sign in</button>
+                <button id="signIn" type="button" onClick={signIn}>Sign in</button>
             </form>
         </div>
     )

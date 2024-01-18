@@ -4,7 +4,8 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
-
+!**/target/**/
+**/node_modules
 .env
 
 ### STS ###
@@ -39,4 +40,8 @@ out/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+**/.DS_Store
+
+/MedHeadBackEnd/target/
+/MedHeadBackEnd/src/main/resources/static/andorra-latest.osm.pbf
+/MedHeadBackEnd/src/main/resources/static/england-latest.osm.pbf
