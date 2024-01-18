@@ -43,5 +43,4 @@ out/
 **/.DS_Store
 
 /MedHeadBackEnd/target/
-/MedHeadBackEnd/src/main/resources/static/andorra-latest.osm.pbf
 /MedHeadBackEnd/src/main/resources/static/england-latest.osm.pbf
