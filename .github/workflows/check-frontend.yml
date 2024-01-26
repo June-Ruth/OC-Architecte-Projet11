@@ -1,4 +1,4 @@
-name: Check - FrontEnd
+name: Check - BackEnd
 on:
   push:
     branches:
@@ -6,10 +6,10 @@ on:
   pull_request:
 
 jobs:
-  run-backend:
+  tests-backend:
     strategy:
       matrix:
-        name: [ Java21 ]
+        name: [Java21]
         include:
           - name: Java21
             os: ubuntu-latest
@@ -30,36 +30,24 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Run Backend
+      - name: Execute Gradle Tests
         run: |
-          cd MedHeadBackEnd
-          ./gradlew bootRun --args='--spring.profiles.active=test'
-
-  run-frontend:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone Project
-        uses: actions/checkout@v4
-      - name: Set Up Node JS
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-          #TODO
+          cd MedHeadFrontEnd/selenium
+          ./gradlew test
 
 
-  tests-end-to-end:
-    needs: [run-backend, run-frontend]
-    strategy:
-      matrix:
-        name: [Windows, Linux, MacOS]
-        include:
-          - name: Windows
-            os: windows-latest
-          - name: Linux
-            os: ubuntu-latest
-          - name: MacOS
-            os: macos-latest
-    runs-on: ${{ matrix.os }}
+#  tests-end-to-end:
+#    needs: [run-backend, run-frontend]
+#    strategy:
+#      matrix:
+#        name: [Windows, Linux, MacOS]
+#        include:
+#          - name: Windows
+#            os: windows-latest
+#          - name: Linux
+#            os: ubuntu-latest
+#          - name: MacOS
+#            os: macos-latest
+#    runs-on: ${{ matrix.os }}
 
 #TODO
