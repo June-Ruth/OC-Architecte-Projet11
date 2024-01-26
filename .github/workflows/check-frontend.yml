@@ -1,4 +1,4 @@
-name: Check - BackEnd
+name: Check - FrontEnd
 on:
   push:
     branches:
