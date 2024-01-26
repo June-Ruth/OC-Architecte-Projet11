@@ -34,13 +34,14 @@ export default function Emergency({usernameP, passwordP}) {
     async function findHospital() {
         console.log(username  + ":" +  password);
 
-        const params = new URLSearchParams;
+        const params = new URLSearchParams();
         params.append("speciality", speciality);
         params.append("latitude", latitude);
         params.append("longitude", longitude);
 
-        const response = await fetch("http://localhost:8080/emergency/hospital?" + params.toString(), {
-            credentials: "include",
+        const url = "http://" + process.env.REACT_APP_HOST + ":" + process.env.REACT_APP_PORT + "/emergency/hospital?" + params.toString();
+
+        const response = await fetch(url, {
             headers: {
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Headers": "*",

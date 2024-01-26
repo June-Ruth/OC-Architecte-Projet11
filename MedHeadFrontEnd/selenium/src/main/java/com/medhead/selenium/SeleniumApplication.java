@@ -1,10 +1,8 @@
 package com.medhead.selenium;
 
-import com.medhead.selenium.configuration.ChromeSeleniumConfiguration;
 import com.medhead.selenium.configuration.SeleniumConfiguration;
 import com.medhead.selenium.routing.EndToEnd;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Profile;
 
 @SpringBootApplication
 public class SeleniumApplication {
@@ -18,7 +16,7 @@ public class SeleniumApplication {
 	}
 
 	public static void main(String[] args) {
-		endToEnd = new EndToEnd(configuration);
+		endToEnd = new EndToEnd(configuration, "http://localhost:3000");
 		endToEnd.login("user", "user");
 		endToEnd.findHospital("ALLERGY", "53.135489", "-2.556205");
 		endToEnd.goToNewEmergency();

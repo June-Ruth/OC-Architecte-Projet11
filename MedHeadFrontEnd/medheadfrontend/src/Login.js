@@ -7,11 +7,13 @@ export default function Login() {
     const [password, setPassword] = useState("");
 
     async function signIn() {
-        const params = new URLSearchParams;
+        const params = new URLSearchParams();
         params.append('username', username);
         params.append('password', password);
 
-        const response = await fetch("http://localhost:8080/login?" + params.toString());
+        const url = "http://" + process.env.REACT_APP_HOST + ":" + process.env.REACT_APP_PORT + "/login?" + params.toString();
+
+        const response = await fetch(url);
 
         if(response.ok) {
             setIsLogin(true);

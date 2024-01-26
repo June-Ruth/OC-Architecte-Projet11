@@ -1,0 +1,11 @@
+FROM node:18-alpine AS builder
+
+COPY /MedHeadFrontEnd/medheadfrontend/ /frontend/
+
+WORKDIR /frontend/
+
+RUN npm install
+
+RUN npm run build
+
+CMD ["npm", "start"]

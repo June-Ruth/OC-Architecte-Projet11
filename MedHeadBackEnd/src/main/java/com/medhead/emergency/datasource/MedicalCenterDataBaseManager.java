@@ -7,11 +7,10 @@ import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
-import org.springframework.beans.factory.annotation.Value;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,18 +26,11 @@ public enum MedicalCenterDataBaseManager {
 
     private final MedicalCenterDataBase MEDICAL_CENTER_DB;
 
-    //@Value("${data.csv.file}")
-    //private String hospitalFileUrl;
-
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
-        Reader reader;
-        try {
-            String hospitalFileUrl = EnvironmentValues.getHospitalFileUrl();
-            reader = new FileReader(hospitalFileUrl, StandardCharsets.ISO_8859_1);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        InputStreamReader reader;
+        InputStream csvStream = getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
+        reader = new InputStreamReader(csvStream, StandardCharsets.ISO_8859_1);
 
         try(reader) {
             CSVFormat csvFormat = CSVFormat.EXCEL.builder()

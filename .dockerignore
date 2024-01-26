@@ -1,0 +1,12 @@
+.git
+*.md
+.cache
+**/target
+.env
+**/.idea
+.gitignore
+.gitattributes
+**/.github
+**/node_modules
+**/hospital-england.csv
+**/england-latest.osm.pbf

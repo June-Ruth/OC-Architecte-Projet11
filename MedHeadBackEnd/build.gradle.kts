@@ -23,6 +23,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.apache.commons:commons-csv:1.10.0")
+	implementation("commons-io:commons-io:2.15.1")
 	implementation("org.json:json:20231013")
 	implementation("com.google.guava:guava:33.0.0-jre")
 	implementation("com.graphhopper:graphhopper-core:8.0")

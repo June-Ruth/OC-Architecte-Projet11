@@ -43,4 +43,5 @@ out/
 **/.DS_Store
 
 /MedHeadBackEnd/target/
-/MedHeadBackEnd/src/main/resources/static/england-latest.osm.pbf
+**/england-latest.osm.pbf
+/MedHeadBackEnd/copy.osm.pbf

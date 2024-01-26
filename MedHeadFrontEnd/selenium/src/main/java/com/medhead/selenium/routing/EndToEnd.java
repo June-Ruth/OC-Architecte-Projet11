@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.Wait;
 public class EndToEnd {
 
     private SeleniumConfiguration configuration;
-    private static final String URL = "http://localhost:3000";
+    private String url;
 
     private WebDriver driver;
 
@@ -20,13 +20,14 @@ public class EndToEnd {
 
     private EmergencyPage emergencyPage;
 
-    public EndToEnd(SeleniumConfiguration seleniumConfiguration) {
+    public EndToEnd(SeleniumConfiguration seleniumConfiguration, String urlP) {
         configuration = seleniumConfiguration;
         driver = configuration.getDriver();
         wait = configuration.getWebDriverWait();
         loginPage = new LoginPage(configuration);
         emergencyPage = new EmergencyPage(configuration);
-        driver.get(URL);
+        url = urlP;
+        driver.get(url);
     }
 
     public void login(String username, String password) {

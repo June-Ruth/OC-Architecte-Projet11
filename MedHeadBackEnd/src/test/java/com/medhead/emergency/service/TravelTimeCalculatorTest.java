@@ -33,7 +33,7 @@ public class TravelTimeCalculatorTest {
         registry.add("spring.datasource.username", SQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", SQL_CONTAINER::getPassword);
     }
-    
+
     private static TravelTimeCalculator travelTimeCalculator;
 
     private List<MedicalCenter> medicalCenters;
