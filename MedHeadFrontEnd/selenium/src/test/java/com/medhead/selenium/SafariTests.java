@@ -85,7 +85,7 @@ public class SafariTests {
 
         GenericContainer<?> FRONT_CONTAINER = new GenericContainer<>(
                 new ImageFromDockerfile()
-                        .withDockerfile(Paths.get(workDir + "/MedHead/Dockerfile-MedHeadFrontEnd")))
+                        .withDockerfile(Paths.get(workDirDecode + "/MedHead/Dockerfile-MedHeadFrontEnd")))
                 .withNetwork(network)
                 .withEnv("REACT_APP_PORT", BACK_CONTAINER.getFirstMappedPort().toString())
                 .withEnv("REACT_APP_HOST", BACK_CONTAINER.getHost())
