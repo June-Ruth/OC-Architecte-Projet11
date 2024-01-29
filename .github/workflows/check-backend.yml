@@ -33,7 +33,7 @@ jobs:
       - name: Execute Gradle Tests
         run: |
           cd MedHeadBackEnd
-          ./gradlew :cmd-line-args:test --environment='DATABASE_DRIVER: com.mysql.cj.jdbc.Driver'
+          ./gradlew test -PDATABASE_DRIVER=com.mysql.cj.jdbc.Driver
 
       - name: Store reports
         if: failure()
