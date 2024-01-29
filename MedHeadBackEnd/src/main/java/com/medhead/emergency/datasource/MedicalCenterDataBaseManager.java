@@ -9,8 +9,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public enum MedicalCenterDataBaseManager {
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
         InputStreamReader reader;
-        InputStream csvStream = getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
+        InputStream csvStream = this.getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
         reader = new InputStreamReader(csvStream, StandardCharsets.ISO_8859_1);
 
         try(reader) {
