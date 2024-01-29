@@ -29,12 +29,7 @@ public enum MedicalCenterDataBaseManager {
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
         InputStreamReader reader;
-        InputStream csvStream = null;//getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
-        try {
-            csvStream = new FileInputStream(EnvironmentValues.getHospitalFileUrl());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+        InputStream csvStream = getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
         reader = new InputStreamReader(csvStream, StandardCharsets.ISO_8859_1);
 
         try(reader) {
