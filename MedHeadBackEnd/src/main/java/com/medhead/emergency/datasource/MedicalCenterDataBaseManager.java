@@ -27,7 +27,7 @@ public enum MedicalCenterDataBaseManager {
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
         InputStreamReader reader;
-        InputStream csvStream = this.getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
+        InputStream csvStream = getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
         reader = new InputStreamReader(csvStream, StandardCharsets.ISO_8859_1);
 
         try(reader) {
