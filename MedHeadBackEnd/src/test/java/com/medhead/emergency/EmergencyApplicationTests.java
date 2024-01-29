@@ -26,6 +26,7 @@ class EmergencyApplicationTests {
 
     @DynamicPropertySource
     static void configureMysqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.driver-class-name", SQL_CONTAINER::getDriverClassName);
         registry.add("spring.datasource.url", SQL_CONTAINER::getJdbcUrl);
         registry.add("spring.datasource.username", SQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", SQL_CONTAINER::getPassword);
