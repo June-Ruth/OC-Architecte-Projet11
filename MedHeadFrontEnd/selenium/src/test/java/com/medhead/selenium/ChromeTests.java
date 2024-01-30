@@ -67,7 +67,7 @@ public class ChromeTests {
 
         GenericContainer<?> BACK_CONTAINER = new GenericContainer<>(
                 new ImageFromDockerfile()
-                        .withDockerfile(Paths.get(workDirDecode + "/MedHead/Dockerfile-MedHeadBackEnd")))
+                        .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadBackEnd")))
                 .withExposedPorts(8081)
                 .withNetwork(network)
                 .withAccessToHost(true)
@@ -83,7 +83,7 @@ public class ChromeTests {
 
         GenericContainer<?> FRONT_CONTAINER = new GenericContainer<>(
                 new ImageFromDockerfile()
-                        .withDockerfile(Paths.get(workDirDecode + "/MedHead/Dockerfile-MedHeadFrontEnd")))
+                        .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadFrontEnd")))
                 .withNetwork(network)
                 .withEnv("REACT_APP_PORT", BACK_CONTAINER.getFirstMappedPort().toString())
                 .withEnv("REACT_APP_HOST", BACK_CONTAINER.getHost())
