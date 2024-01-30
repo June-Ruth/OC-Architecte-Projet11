@@ -39,10 +39,10 @@ jobs:
       - name: Execute Gradle Tests
         run: |
           cd MedHeadFrontEnd/selenium
-          ./gradlew test
+          ./gradlew test -Dspring.work.directory='/home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/'
 
       - name: Store reports
-        if: failure()
+        if: always()
         uses: actions/upload-artifact@v3
         with:
           name: end-to-end tests

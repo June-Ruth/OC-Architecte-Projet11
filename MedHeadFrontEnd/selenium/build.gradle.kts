@@ -24,7 +24,9 @@ dependencies {
 	testImplementation("org.testcontainers:mysql")
 }
 
-tasks.withType<Test> {
+tasks.test {
 	useJUnitPlatform()
-	exclude("**/SafariTests")
+	filter {
+		excludeTestsMatching("*SafariTests")
+	}
 }
