@@ -31,8 +31,6 @@ tasks.test {
 	useJUnitPlatform()
 	filter {
 		excludeTestsMatching("*SafariTests")
-		excludeTestsMatching("*EdgeTests")
 		excludeTestsMatching("*MozillaTests")
-
 	}
 }

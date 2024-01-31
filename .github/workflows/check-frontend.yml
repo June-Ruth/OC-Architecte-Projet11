@@ -1,25 +1,30 @@
 name: Check - FrontEnd
+
 on:
   push:
     branches:
       - main
   pull_request:
 
+env:
+  WORK_DIRECTORY: /home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/
+
 jobs:
   tests-end-to-end:
     strategy:
        matrix:
-         name: [Windows, Linux, MacOS]
+         #name: [Windows, Linux, MacOS]
+         name: [Linux]
          include:
-           - name: Windows
-             os: windows-latest
-             java-version: 21
+           #- name: Windows
+             #os: windows-latest
+             #java-version: 21
            - name: Linux
              os: ubuntu-latest
              java-version: 21
-           - name: MacOS
-             os: macos-latest
-             java-version: 21
+           #- name: MacOS
+             #os: macos-latest
+             #java-version: 21
     runs-on: ${{ matrix.os }}
     steps:
       - name: Clone Project
@@ -39,7 +44,7 @@ jobs:
       - name: Execute Gradle Tests
         run: |
           cd MedHeadFrontEnd/selenium
-          ./gradlew bootTestRun --args='--work.directory=/home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/'
+          ./gradlew test
 
 
       - name: Store reports

@@ -4,12 +4,15 @@ import com.medhead.selenium.object.Hospital;
 import com.medhead.selenium.page.EmergencyPage;
 import com.medhead.selenium.page.LoginPage;
 import com.medhead.selenium.routing.EndToEnd;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.containers.BrowserWebDriverContainer;
@@ -20,10 +23,8 @@ import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.time.Duration;
-import java.util.logging.LogManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,6 +34,15 @@ public class ChromeTests {
 
     @Value("${work.directory}")
     private String workDir;
+
+    private MySQLContainer<?> sqlContainer;
+
+    private GenericContainer<?> backendContainer;
+
+    private GenericContainer<?> frontendContainer;
+
+    private BrowserWebDriverContainer<?> chromeContainer;
+
     private String frontAddress;
 
     private Wait<WebDriver> wait;
@@ -47,10 +57,12 @@ public class ChromeTests {
 
     private Hospital hospitalExpected;
 
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @BeforeEach
     void beforeEach() {
 
-        MySQLContainer<?> sqlContainer = new MySQLContainer<>("mysql:8.0.30")
+        sqlContainer = new MySQLContainer<>("mysql:8.0.30")
                 .withDatabaseName("medhead")
                 .withNetwork(Network.SHARED)
                 .withNetworkAliases("mysql")
@@ -59,9 +71,7 @@ public class ChromeTests {
 
         sqlContainer.start();
 
-        String workDirDecode = new String(workDir.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
-
-        GenericContainer<?> backendContainer = new GenericContainer(
+        backendContainer = new GenericContainer(
                 new ImageFromDockerfile()
                         .withDockerfile(Paths.get(workDir + "/Dockerfile-MedHeadBackEnd")))
                 .dependsOn(sqlContainer)
@@ -73,11 +83,15 @@ public class ChromeTests {
                 .withEnv("DATABASE_URL", "jdbc:mysql://mysql:" + MySQLContainer.MYSQL_PORT + "/medhead")
                 .withEnv("DATABASE_USERNAME", sqlContainer.getUsername())
                 .withEnv("DATABASE_PASSWORD", sqlContainer.getPassword())
+                .waitingFor(org.testcontainers.containers.wait.strategy.Wait.forLogMessage(".*Started EmergencyApplication.*", 1))
                 ;
+        try {
+            backendContainer.start();
+        } finally {
+            logger.error(backendContainer.getLogs());
+        }
 
-        backendContainer.start();
-
-        GenericContainer<?> frontendContainer =  new GenericContainer<>(
+        frontendContainer =  new GenericContainer<>(
                 new ImageFromDockerfile()
                         .withDockerfile(Paths.get(workDir + "/Dockerfile-MedHeadFrontEnd")))
                 .dependsOn(backendContainer)
@@ -90,7 +104,7 @@ public class ChromeTests {
 
         frontendContainer.start();
 
-        BrowserWebDriverContainer<?> chromeContainer = (BrowserWebDriverContainer<?>) new BrowserWebDriverContainer()
+        chromeContainer = (BrowserWebDriverContainer<?>) new BrowserWebDriverContainer()
                 .withCapabilities(new ChromeOptions())
                 .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("build"))
                 .dependsOn(frontendContainer)
@@ -113,6 +127,15 @@ public class ChromeTests {
         hospitalExpected.setCity("Walton-on-Thames");
         hospitalExpected.setCounty("Surrey");
         hospitalExpected.setPostcode("KT12 3LD");
+    }
+
+    @AfterEach
+    void afterEach() {
+        driver.quit();
+        chromeContainer.stop();
+        frontendContainer.stop();
+        backendContainer.stop();
+        sqlContainer.stop();
     }
 
     @Test
