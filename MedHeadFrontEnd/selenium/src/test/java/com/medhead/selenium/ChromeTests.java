@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.testcontainers.containers.BrowserWebDriverContainer;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.time.Duration;
+import java.util.logging.LogManager;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -61,7 +63,7 @@ public class ChromeTests {
 
         GenericContainer<?> backendContainer = new GenericContainer(
                 new ImageFromDockerfile()
-                        .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadBackEnd")))
+                        .withDockerfile(Paths.get(workDir + "/Dockerfile-MedHeadBackEnd")))
                 .dependsOn(sqlContainer)
                 .withNetwork(sqlContainer.getNetwork())
                 .withNetworkAliases("backend")
@@ -77,7 +79,7 @@ public class ChromeTests {
 
         GenericContainer<?> frontendContainer =  new GenericContainer<>(
                 new ImageFromDockerfile()
-                        .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadFrontEnd")))
+                        .withDockerfile(Paths.get(workDir + "/Dockerfile-MedHeadFrontEnd")))
                 .dependsOn(backendContainer)
                 .withNetwork(backendContainer.getNetwork())
                 .withNetworkAliases("frontend")
