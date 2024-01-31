@@ -39,7 +39,7 @@ jobs:
       - name: Execute Gradle Tests
         run: |
           cd MedHeadFrontEnd/selenium
-          ./gradlew test -Dspring.work.directory=''
+          ./gradlew test -Dspring.work.directory='/home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/'
 
       - name: Store reports
         if: always()
