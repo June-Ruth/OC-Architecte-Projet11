@@ -39,7 +39,8 @@ jobs:
       - name: Execute Gradle Tests
         run: |
           cd MedHeadFrontEnd/selenium
-          WORK_DIRECTORY='/home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/' ./gradlew test
+          ./gradlew bootTestRun --args='--work.directory=/home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/'
+
 
       - name: Store reports
         if: always()
