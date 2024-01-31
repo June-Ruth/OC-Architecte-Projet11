@@ -1,104 +1,110 @@
 package com.medhead.selenium;
 
-import com.medhead.selenium.configuration.SeleniumConfiguration;
 import com.medhead.selenium.object.Hospital;
 import com.medhead.selenium.page.EmergencyPage;
 import com.medhead.selenium.page.LoginPage;
 import com.medhead.selenium.routing.EndToEnd;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.Wait;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.testcontainers.containers.BrowserWebDriverContainer;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.Network;
 import org.testcontainers.images.builder.ImageFromDockerfile;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
+import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @Testcontainers
-@ActiveProfiles({"chrome", "test"})
 public class ChromeTests {
 
     @Value("${work.directory}")
     private String workDir;
-
-    private String backAddress;
-
     private String frontAddress;
 
-    @Autowired
-    private SeleniumConfiguration configuration;
     private Wait<WebDriver> wait;
+
+    private WebDriver driver;
 
     private EndToEnd endToEnd;
 
     private LoginPage loginPage;
+
     private EmergencyPage emergencyPage;
 
     private Hospital hospitalExpected;
 
     @BeforeEach
     void beforeEach() {
-        Network network = Network.newNetwork();
 
-        String dbName = "medhead";
-        String dbHost = "mysqlcontainer";
-        MySQLContainer<?> SQL_CONTAINER = new MySQLContainer<>("mysql:8.0.30")
-                .withDatabaseName(dbName)
-                .withNetwork(network)
-                .withNetworkAliases(dbHost)
+        MySQLContainer<?> sqlContainer = new MySQLContainer<>("mysql:8.0.30")
+                .withDatabaseName("medhead")
+                .withNetwork(Network.SHARED)
+                .withNetworkAliases("mysql")
                 .withExposedPorts(3306)
                 ;
 
-        SQL_CONTAINER.start();
-
-        String jdbcUrl = "jdbc:mysql://" + dbHost + ":" + MySQLContainer.MYSQL_PORT + "/" + dbName;
+        sqlContainer.start();
 
         String workDirDecode = new String(workDir.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
 
-        GenericContainer<?> BACK_CONTAINER = new GenericContainer<>(
+        GenericContainer<?> backendContainer = new GenericContainer(
                 new ImageFromDockerfile()
                         .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadBackEnd")))
+                .dependsOn(sqlContainer)
+                .withNetwork(sqlContainer.getNetwork())
+                .withNetworkAliases("backend")
                 .withExposedPorts(8081)
-                .withNetwork(network)
                 .withAccessToHost(true)
-                .withEnv("DATABASE_DRIVER", SQL_CONTAINER.getDriverClassName())
-                .withEnv("DATABASE_URL", jdbcUrl)
-                .withEnv("DATABASE_USERNAME", SQL_CONTAINER.getUsername())
-                .withEnv("DATABASE_PASSWORD", SQL_CONTAINER.getPassword())
+                .withEnv("DATABASE_DRIVER", sqlContainer.getDriverClassName())
+                .withEnv("DATABASE_URL", "jdbc:mysql://mysql:" + MySQLContainer.MYSQL_PORT + "/medhead")
+                .withEnv("DATABASE_USERNAME", sqlContainer.getUsername())
+                .withEnv("DATABASE_PASSWORD", sqlContainer.getPassword())
                 ;
 
-        org.testcontainers.Testcontainers.exposeHostPorts(8081);
+        backendContainer.start();
 
-        BACK_CONTAINER.start();
-
-        GenericContainer<?> FRONT_CONTAINER = new GenericContainer<>(
+        GenericContainer<?> frontendContainer =  new GenericContainer<>(
                 new ImageFromDockerfile()
                         .withDockerfile(Paths.get(workDirDecode + "/Dockerfile-MedHeadFrontEnd")))
-                .withNetwork(network)
-                .withEnv("REACT_APP_PORT", BACK_CONTAINER.getFirstMappedPort().toString())
-                .withEnv("REACT_APP_HOST", BACK_CONTAINER.getHost())
-                .withExposedPorts(3000);
+                .dependsOn(backendContainer)
+                .withNetwork(backendContainer.getNetwork())
+                .withNetworkAliases("frontend")
+                .withExposedPorts(3000)
+                .withEnv("REACT_APP_PORT", "8081")
+                .withEnv("REACT_APP_HOST", "backend")
+                ;
 
-        FRONT_CONTAINER.start();
+        frontendContainer.start();
 
-        backAddress = "http://" + BACK_CONTAINER.getHost() + ":" + BACK_CONTAINER.getFirstMappedPort();
-        System.out.println(backAddress);
-        frontAddress = "http://" + FRONT_CONTAINER.getHost() + ":" + FRONT_CONTAINER.getFirstMappedPort();
-        System.out.println(frontAddress);
-        endToEnd = new EndToEnd(configuration, frontAddress);
-        wait = configuration.getWebDriverWait();
-        loginPage = new LoginPage(configuration);
-        emergencyPage = new EmergencyPage(configuration);
+        BrowserWebDriverContainer<?> chromeContainer = (BrowserWebDriverContainer<?>) new BrowserWebDriverContainer()
+                .withCapabilities(new ChromeOptions())
+                .withRecordingMode(BrowserWebDriverContainer.VncRecordingMode.RECORD_ALL, new File("build"))
+                .dependsOn(frontendContainer)
+                .withNetwork(frontendContainer.getNetwork())
+                .withNetworkAliases("chrome")
+                ;
+
+        chromeContainer.start();
+
+        frontAddress = "http://frontend:3000";
+        driver = chromeContainer.getWebDriver();
+        endToEnd = new EndToEnd(driver, frontAddress);
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        loginPage = new LoginPage(driver);
+        emergencyPage = new EmergencyPage(driver);
+
         hospitalExpected = new Hospital();
         hospitalExpected.setName("Walton Community Hospital - Virgin Care Services Ltd");
         hospitalExpected.setAddress2("Rodney Road");

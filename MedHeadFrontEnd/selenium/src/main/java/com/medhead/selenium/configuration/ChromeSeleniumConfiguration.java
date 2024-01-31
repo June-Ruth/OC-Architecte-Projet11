@@ -23,6 +23,12 @@ public class ChromeSeleniumConfiguration implements SeleniumConfiguration {
         wait = new WebDriverWait(driver, Duration.ofSeconds(60));
     }
 
+    public ChromeSeleniumConfiguration(WebDriver driverP) {
+        driver = driverP;
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+    }
+
     @Override
     public WebDriver getDriver() {
         return driver;

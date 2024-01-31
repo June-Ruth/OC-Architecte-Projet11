@@ -13,6 +13,10 @@ public class LoginPage {
         driver = configurationP.getDriver();
     }
 
+    public LoginPage(WebDriver driverP) {
+        driver = driverP;
+    }
+
     private WebElement form;
 
     private WebElement usernameInput;

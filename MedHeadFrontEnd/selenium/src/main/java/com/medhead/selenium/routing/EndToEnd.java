@@ -6,6 +6,9 @@ import com.medhead.selenium.page.EmergencyPage;
 import com.medhead.selenium.page.LoginPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 public class EndToEnd {
 
@@ -26,6 +29,15 @@ public class EndToEnd {
         wait = configuration.getWebDriverWait();
         loginPage = new LoginPage(configuration);
         emergencyPage = new EmergencyPage(configuration);
+        url = urlP;
+        driver.get(url);
+    }
+
+    public EndToEnd(WebDriver driverP, String urlP) {
+        driver = driverP;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+        loginPage = new LoginPage(driverP);
+        emergencyPage = new EmergencyPage(driverP);
         url = urlP;
         driver.get(url);
     }

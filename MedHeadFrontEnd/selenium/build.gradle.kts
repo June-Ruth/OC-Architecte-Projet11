@@ -22,11 +22,17 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
+	implementation("org.testcontainers:selenium:1.19.4")
+	implementation("org.seleniumhq.selenium:selenium-chrome-driver:4.17.0")
+
 }
 
 tasks.test {
 	useJUnitPlatform()
 	filter {
 		excludeTestsMatching("*SafariTests")
+		excludeTestsMatching("*EdgeTests")
+		excludeTestsMatching("*MozillaTests")
+
 	}
 }

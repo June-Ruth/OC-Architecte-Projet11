@@ -13,6 +13,10 @@ public class EmergencyPage {
         driver = configurationP.getDriver();
     }
 
+    public EmergencyPage(WebDriver driverP) {
+        driver = driverP;
+    }
+
     private WebElement form;
 
     private WebElement specialityInput;
