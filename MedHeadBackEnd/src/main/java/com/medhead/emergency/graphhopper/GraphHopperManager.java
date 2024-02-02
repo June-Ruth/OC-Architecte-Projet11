@@ -15,10 +15,10 @@ public enum GraphHopperManager {
     private GraphHopper GRAPHHOPPER;
 
     GraphHopperManager() {
-        getGraphHopperInstance();
+        setGraphHopperInstance();
     }
 
-    public GraphHopper getGraphHopperInstance() {
+    public void setGraphHopperInstance() {
         GRAPHHOPPER = new GraphHopper();
         InputStream osmStream = getClass().getResourceAsStream(EnvironmentValues.getOsmFile());
         File copied = new File("copy.osm.pbf");
@@ -32,6 +32,9 @@ public enum GraphHopperManager {
         GRAPHHOPPER.setProfiles(new Profile("car").setVehicle("car").setTurnCosts(false));
         GRAPHHOPPER.getCHPreparationHandler().setCHProfiles(new CHProfile("car"));
         GRAPHHOPPER.importOrLoad();
+    }
+
+    public GraphHopper getGraphHopperInstance() {
         return GRAPHHOPPER;
     }
 }
