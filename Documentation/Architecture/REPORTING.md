@@ -1,6 +1,6 @@
 # Reporting
 ## Rappel des attentes
-Les attentes sont exprimées dans le document `Exigences pour le développement`.
+Les attentes sont exprimées dans le document [Exigences pour le développement](Documentation/Architecture/Exigences%20pour%20le%20développement.pdf).
 
 ## Constat
 ### Fonctionnalités

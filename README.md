@@ -4,9 +4,9 @@
 L’application nécessite les variables d’environnement suivante :
 ```
 DATABASE_DRIVER: com.mysql.cj.jdbc.Driver
-DATABASE_URL: *addresse de la base de donnée
-DATABASE_USERNAME: *utilisateur de la base de donnée
-DATABASE_PASSWORD: *mot de passe de la base de donnée
+DATABASE_URL: addresse de la base de donnée
+DATABASE_USERNAME: utilisateur de la base de donnée
+DATABASE_PASSWORD: mot de passe de la base de donnée
 ```
 Ces variables peuvent être insérées dans un fichier .env à la racine du projet.
 
@@ -45,6 +45,8 @@ Les documents d'architecture existant peuvent être retrouvés dans le dossier `
 [Déclaration des travaux d'architecture](Documentation/Architecture/Déclaration%20des%20travaux%20d’architecture.pdf)
 
 [Principe de l'architecture](Documentation/Architecture/Principes%20de%20l'architecture.pdf)
+
+[Exigences pour le développement](Documentation/Architecture/Exigences%20pour%20le%20développement.pdf)
 
 Le reporting du POC faisant part de nos conclusions est disponible dans ce même dossier.
 
