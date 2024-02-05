@@ -32,5 +32,16 @@ tasks.test {
 	filter {
 		excludeTestsMatching("*SafariTests")
 		excludeTestsMatching("*MozillaTests")
+		excludeTestsMatching("*EdgeTests")
+		excludeTestsMatching("*ChromeTests")
+	}
+}
+
+tasks.register("localTests", Test::class) {
+	description = "Run tests on your local device."
+	useJUnitPlatform()
+	filter {
+		excludeTestsMatching("*SafariTests")
+		excludeTestsMatching("*MozillaTests")
 	}
 }

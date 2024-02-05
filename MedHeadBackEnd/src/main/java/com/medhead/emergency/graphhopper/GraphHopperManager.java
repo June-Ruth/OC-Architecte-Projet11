@@ -12,13 +12,9 @@ public enum GraphHopperManager {
 
     INSTANCE;
 
-    private GraphHopper GRAPHHOPPER;
+    private final GraphHopper GRAPHHOPPER;
 
     GraphHopperManager() {
-        setGraphHopperInstance();
-    }
-
-    public void setGraphHopperInstance() {
         GRAPHHOPPER = new GraphHopper();
         InputStream osmStream = getClass().getResourceAsStream(EnvironmentValues.getOsmFile());
         File copied = new File("copy.osm.pbf");

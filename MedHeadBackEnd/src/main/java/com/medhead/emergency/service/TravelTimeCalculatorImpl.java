@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 @Service
 public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
@@ -36,12 +38,13 @@ public class TravelTimeCalculatorImpl implements TravelTimeCalculator {
     @Override
     public MedicalCenterWithTravelTime findClosestMedicalCenter(GeographicCoordinates position, List<MedicalCenter> medicalCenters) {
         TreeMultimap<Integer, MedicalCenter> closestMedicalCenters = TreeMultimap.create();
-        for(MedicalCenter medicalCenter : medicalCenters) {
-            if(medicalCenter.getGeographicCoordinates().getLongitude() != 0 && medicalCenter.getGeographicCoordinates().getLatitude() != 0) {
-                long time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
-                closestMedicalCenters.put((int) time, medicalCenter);
-            }
-        }
+
+        Stream<MedicalCenter> medicalCenterStream = StreamSupport.stream(((Iterable<MedicalCenter>) medicalCenters).spliterator(), true);
+        medicalCenterStream.forEach(medicalCenter -> {
+            long time = calculateTravelTimeBetweenTwoPoints(position, medicalCenter.getGeographicCoordinates());
+            closestMedicalCenters.put((int) time, medicalCenter);
+        });
+
         Map.Entry<Integer, MedicalCenter> closestMedicalCenter = closestMedicalCenters.entries().stream().findFirst().get();
 
         return new MedicalCenterWithTravelTime(closestMedicalCenter.getValue(), closestMedicalCenter.getKey());

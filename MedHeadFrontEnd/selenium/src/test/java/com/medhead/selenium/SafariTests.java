@@ -112,6 +112,8 @@ public class SafariTests {
 
         safariContainer.start();
 
+        //TODO : Safari not supported by TestContainer
+
         frontAddress = "http://frontend:3000";
         driver = safariContainer.getWebDriver();
         endToEnd = new EndToEnd(driver, frontAddress);

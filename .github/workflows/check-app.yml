@@ -1,4 +1,4 @@
-name: Check - FrontEnd
+name: Check - Application
 
 on:
   push:
@@ -13,18 +13,18 @@ jobs:
   tests-end-to-end:
     strategy:
        matrix:
-         #name: [Windows, Linux, MacOS]
+         name: [Windows, Linux, MacOS]
          name: [Linux]
          include:
-           #- name: Windows
-             #os: windows-latest
-             #java-version: 21
+           - name: Windows
+             os: windows-latest
+             java-version: 21
            - name: Linux
              os: ubuntu-latest
              java-version: 21
-           #- name: MacOS
-             #os: macos-latest
-             #java-version: 21
+           - name: MacOS
+             os: macos-latest
+             java-version: 21
     runs-on: ${{ matrix.os }}
     steps:
       - name: Clone Project
@@ -46,8 +46,7 @@ jobs:
           cd MedHeadFrontEnd/selenium
           ./gradlew test
 
-
-      - name: Store reports
+      - name: Store Tests Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:

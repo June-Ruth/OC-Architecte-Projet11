@@ -85,11 +85,6 @@ public class ChromeTests {
                 .withEnv("DATABASE_PASSWORD", sqlContainer.getPassword())
                 .waitingFor(org.testcontainers.containers.wait.strategy.Wait.forLogMessage(".*Started EmergencyApplication.*", 1))
                 ;
-        try {
-            backendContainer.start();
-        } finally {
-            logger.error(backendContainer.getLogs());
-        }
 
         frontendContainer =  new GenericContainer<>(
                 new ImageFromDockerfile()

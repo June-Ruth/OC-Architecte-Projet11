@@ -36,7 +36,7 @@ jobs:
           cd MedHeadBackEnd
           ./gradlew test
 
-      - name: Store reports
+      - name: Store Tests Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
@@ -44,3 +44,11 @@ jobs:
           path: |
             **/build/reports/
             **/build/test-results/
+
+      - name: Store Production Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: distribution
+          path: |
+            **/build/reports/
+            **/build/test-results/     
