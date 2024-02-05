@@ -1,0 +1,39 @@
+name : Check - FrontEnd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  tests-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Project
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: |
+          cd MedHeadFrontEnd/medheadfrontend
+          npm install
+
+      - name: Execute Node Tests
+        run: |
+          npm run build --if-present
+          npm test
+
+      - name: Store production artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/**/*.md

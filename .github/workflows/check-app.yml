@@ -33,13 +33,13 @@ jobs:
           lfs: 'true'
 
       - name: Set up JDK ${{ matrix.java-version }}
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java-version }}
           distribution: oracle
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
 
       - name: Execute Gradle Tests
         run: |
@@ -48,7 +48,7 @@ jobs:
 
       - name: Store Tests Reports
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: end-to-end tests
           path: |
