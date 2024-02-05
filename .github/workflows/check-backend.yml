@@ -46,7 +46,9 @@ jobs:
             **/build/test-results/   
 
       - name: Execute Gradle build
-        run: ./gradlew build
+        run: |
+          cd MedHeadBackEnd          
+          ./gradlew build
 
       - name: Store Production Artifact
         uses: actions/upload-artifact@v4

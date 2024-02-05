@@ -27,6 +27,7 @@ jobs:
 
       - name: Execute Node Tests
         run: |
+          cd MedHeadFrontEnd/medheadfrontend
           npm run build --if-present
           npm test
 
