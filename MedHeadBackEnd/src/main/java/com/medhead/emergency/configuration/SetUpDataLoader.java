@@ -1,7 +1,10 @@
 package com.medhead.emergency.configuration;
 
+import com.medhead.emergency.datasource.MedicalCenterDataBaseManager;
 import com.medhead.emergency.entity.EmergencyUser;
+import com.medhead.emergency.graphhopper.GraphHopperManager;
 import com.medhead.emergency.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
@@ -24,10 +27,14 @@ public class SetUpDataLoader implements ApplicationListener<ContextRefreshedEven
     private final PasswordEncoder passwordEncoder;
     private final DataSource dataSource;
 
+    @Value("${data.csv.file}")
+    private String hospitalFileUrl;
+
     public SetUpDataLoader(UserServiceImpl userServiceP, PasswordEncoder passwordEncoderP, DataSource dataSourceP) {
         userService = userServiceP;
         passwordEncoder = passwordEncoderP;
         dataSource = dataSourceP;
+
     }
 
     /**
@@ -51,9 +58,12 @@ public class SetUpDataLoader implements ApplicationListener<ContextRefreshedEven
             if (!userService.checkUserByUsername(admin.getUsername())) {
                 userService.saveUser(admin);
             }
-
-
+            prepareGraphHopper();
             alreadySetup = true;
         }
+    }
+
+    private void prepareGraphHopper() {
+        GraphHopperManager.INSTANCE.getGraphHopperInstance();
     }
 }

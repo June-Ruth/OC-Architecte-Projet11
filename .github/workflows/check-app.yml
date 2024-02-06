@@ -1,0 +1,55 @@
+name: Check - Application
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+env:
+  WORK_DIRECTORY: /home/runner/work/OC-Architecte-Projet11-Dev/OC-Architecte-Projet11-Dev/
+
+jobs:
+  tests-end-to-end:
+    strategy:
+       matrix:
+         name: [Windows, Linux, MacOS]
+         include:
+           - name: Windows
+             os: windows-latest
+             java-version: 21
+           - name: Linux
+             os: ubuntu-latest
+             java-version: 21
+           - name: MacOS
+             os: macos-latest
+             java-version: 21
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Clone Project
+        uses: actions/checkout@v4
+        with:
+          lfs: 'true'
+
+      - name: Set up JDK ${{ matrix.java-version }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: oracle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Execute Gradle Tests
+        run: |
+          cd MedHeadFrontEnd/selenium
+          ./gradlew test
+
+      - name: Store Tests Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: end-to-end tests on ${{ matrix.os }}
+          path: |
+            **/build/reports/
+            **/build/test-results/

@@ -1,7 +1,7 @@
 package com.medhead.emergency.controller;
 
-import com.medhead.emergency.dto.MedicalCenterDto;
-import com.medhead.emergency.dto.converter.MedicalCenterDtoConverter;
+import com.medhead.emergency.dto.ReservationDto;
+import com.medhead.emergency.dto.converter.ReservationDtoConverter;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.MedicalCenterWithTravelTime;
@@ -9,6 +9,7 @@ import com.medhead.emergency.entity.Speciality;
 import com.medhead.emergency.service.BedAvailabilityService;
 import com.medhead.emergency.service.MedicalCenterService;
 import com.medhead.emergency.service.TravelTimeCalculator;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,13 +32,10 @@ public class EmergencyController {
         medicalCenterService = medicalCenterServiceP;
         bedAvailabilityService = bedAvailabilityServiceP;
         travelTimeCalculator = travelTimeCalculatorP;
-
     }
 
-
     @GetMapping("/emergency/hospital")
-    @ResponseBody
-    public MedicalCenterDto getMedicalCenterBySpecialityAndLocalisation(
+    public ResponseEntity<ReservationDto> getMedicalCenterBySpecialityAndLocalisation(
             @RequestParam("speciality") Speciality speciality,
             @RequestParam("latitude") double latitude,
             @RequestParam("longitude") double longitude
@@ -50,7 +48,12 @@ public class EmergencyController {
         MedicalCenterWithTravelTime closestMedicalCenter = travelTimeCalculator
                 .findClosestMedicalCenter(new GeographicCoordinates(latitude, longitude), medicalCentersBySpecialityWithAvailability);
 
-        return MedicalCenterDtoConverter.convertMedicalCenterWithTravelTimeToMedicalCenterDto(closestMedicalCenter);
+        int reservationNumber = bedAvailabilityService.registerOneBedReservation(closestMedicalCenter.getMedicalCenter().getOrganisationId());
+
+        ReservationDto reservation = ReservationDtoConverter.convertMedicalCenterWithTravelTimeToReservationDto(closestMedicalCenter, reservationNumber);
+        System.out.println(reservation);
+
+        return ResponseEntity.ok(reservation);
     }
 
 }

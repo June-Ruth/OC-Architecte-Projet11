@@ -4,14 +4,34 @@ import com.medhead.emergency.entity.MedicalCenter;
 import com.medhead.emergency.entity.Speciality;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Testcontainers
+@ActiveProfiles("test")
 public class MedicalCenterSpecialismsRepositoryTest {
+
+    @Container
+    private static final MySQLContainer<?> SQL_CONTAINER = new MySQLContainer<>().withDatabaseName("medhead");
+
+    @DynamicPropertySource
+    static void configureMysqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.driver-class-name", SQL_CONTAINER::getDriverClassName);
+        registry.add("spring.datasource.url", SQL_CONTAINER::getJdbcUrl);
+        registry.add("spring.datasource.username", SQL_CONTAINER::getUsername);
+        registry.add("spring.datasource.password", SQL_CONTAINER::getPassword);
+    }
 
     private static MedicalCenterSpecialismsRepository medicalCenterSpecialismsRepository;
 
@@ -30,8 +50,8 @@ public class MedicalCenterSpecialismsRepositoryTest {
         assertEquals("Walton-on-Thames", medicalCenter.getCity());
         assertEquals("Surrey", medicalCenter.getCounty());
         assertEquals("KT12 3LD", medicalCenter.getPostcode());
-        assertEquals(51.379997253417969, medicalCenter.getGeographicCoordinates().getLatitude());
-        assertEquals(-0.40604206919670105, medicalCenter.getGeographicCoordinates().getLongitude());
+        assertEquals(42.471300, medicalCenter.getGeographicCoordinates().getLatitude());
+        assertEquals(1.493051, medicalCenter.getGeographicCoordinates().getLongitude());
         assertEquals(3, medicalCenter.getSpecialities().size());
     }
 
@@ -44,14 +64,14 @@ public class MedicalCenterSpecialismsRepositoryTest {
     @Test
     void findAllMedicalCenterTest() {
         List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCenters();
-        assertEquals(1165, medicalCenters.size());
+        assertEquals(1, medicalCenters.size());
     }
 
     @Test
     void findAllMedicalCenterBySpecialityTest() {
-        List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCentersBySpeciality(Speciality.ANAESTHETICS);
-        assertTrue(medicalCenters.getFirst().getSpecialities().contains(Speciality.ANAESTHETICS));
-        assertTrue(medicalCenters.size() < 1165);
+        List<MedicalCenter> medicalCenters = medicalCenterSpecialismsRepository.findAllMedicalCentersBySpeciality(Speciality.ALLERGY);
+        assertTrue(medicalCenters.getFirst().getSpecialities().contains(Speciality.ALLERGY));
+        assertEquals(1, medicalCenters.size());
     }
 
 }

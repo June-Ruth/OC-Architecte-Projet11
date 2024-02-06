@@ -1,5 +1,6 @@
 package com.medhead.emergency.datasource;
 
+import com.medhead.emergency.configuration.EnvironmentValues;
 import com.medhead.emergency.entity.GeographicCoordinates;
 import com.medhead.emergency.entity.HospitalCsvHeader;
 import com.medhead.emergency.entity.MedicalCenter;
@@ -7,9 +8,7 @@ import com.medhead.emergency.entity.Speciality;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +26,9 @@ public enum MedicalCenterDataBaseManager {
 
     MedicalCenterDataBaseManager() {
         List<MedicalCenter> medicalCenters = new ArrayList<>();
-        Reader reader;
-        try {
-            String hospitalFileUrl = "src/main/resources/hospital.csv";
-            reader = new FileReader(hospitalFileUrl, StandardCharsets.ISO_8859_1);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        InputStreamReader reader;
+        InputStream csvStream = getClass().getResourceAsStream(EnvironmentValues.getHospitalFileUrl());
+        reader = new InputStreamReader(csvStream, StandardCharsets.ISO_8859_1);
 
         try(reader) {
             CSVFormat csvFormat = CSVFormat.EXCEL.builder()
@@ -83,7 +78,7 @@ public enum MedicalCenterDataBaseManager {
         medicalCenter.setPostcode(postcode);
         medicalCenter.setGeographicCoordinates(new GeographicCoordinates(latitude, longitude));
         List<Speciality> specialities = new ArrayList<>();
-        Speciality speciality1 = Speciality.randomSpeciality();
+        Speciality speciality1 = Speciality.ALLERGY;
         Speciality speciality2 = Speciality.randomSpeciality();
         Speciality speciality3 = Speciality.randomSpeciality();
         specialities.add(speciality1);

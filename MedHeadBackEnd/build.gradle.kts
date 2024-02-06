@@ -22,10 +22,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
 	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("org.springframework.cloud:spring-cloud-starter-gateway-mvc")
 	implementation("org.apache.commons:commons-csv:1.10.0")
+	implementation("commons-io:commons-io:2.15.1")
 	implementation("org.json:json:20231013")
 	implementation("com.google.guava:guava:33.0.0-jre")
+	implementation("com.graphhopper:graphhopper-core:8.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
@@ -33,12 +34,8 @@ dependencies {
 	testImplementation("org.testcontainers:mysql")
 }
 
-dependencyManagement {
-	imports {
-		mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
-	}
-}
-
 tasks.withType<Test> {
 	useJUnitPlatform()
+	minHeapSize = "512m"
+	maxHeapSize = "3096m"
 }

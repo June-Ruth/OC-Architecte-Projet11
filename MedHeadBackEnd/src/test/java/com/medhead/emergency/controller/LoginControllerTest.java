@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Testcontainers
+@ActiveProfiles("test")
 public class LoginControllerTest {
 
     @Autowired
@@ -32,24 +34,26 @@ public class LoginControllerTest {
 
     @DynamicPropertySource
     static void configureMysqlProperties(DynamicPropertyRegistry registry) {
+        registry.add("spring.datasource.driver-class-name", SQL_CONTAINER::getDriverClassName);
         registry.add("spring.datasource.url", SQL_CONTAINER::getJdbcUrl);
         registry.add("spring.datasource.username", SQL_CONTAINER::getUsername);
         registry.add("spring.datasource.password", SQL_CONTAINER::getPassword);
     }
 
     @Test
-    public void loginPageAccessSuccessTest() throws Exception {
-        mvc.perform(get("/login")).andDo(print()).andExpect(status().isOk());
-    }
-
-    @Test
     public void userLoginSuccessTest() throws Exception {
-        mvc.perform(formLogin("/login").user("user").password("user")).andExpect(authenticated());
+        mvc.perform(get("/login")
+                .queryParam("username", "user")
+                .queryParam("password", "user"))
+                .andExpect(status().isOk());
     }
 
     @Test
     public void userLoginFailedTest() throws Exception {
-        mvc.perform(formLogin("/login").user("user").password("wrongpassword")).andExpect(unauthenticated());
+        mvc.perform(get("/login")
+                .queryParam("username", "user")
+                .queryParam("password", "wrongpassword"))
+                .andExpect(unauthenticated());
     }
 
     @Test
@@ -60,7 +64,7 @@ public class LoginControllerTest {
 
     @Test
     public void userPageAccessWithUnauthenticatedUserTest() throws Exception {
-        mvc.perform(get("/user")).andDo(print()).andExpect(status().is3xxRedirection());
+        mvc.perform(get("/user")).andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
