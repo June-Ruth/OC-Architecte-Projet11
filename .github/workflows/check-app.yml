@@ -14,7 +14,6 @@ jobs:
     strategy:
        matrix:
          name: [Windows, Linux, MacOS]
-         name: [Linux]
          include:
            - name: Windows
              os: windows-latest
