@@ -20,7 +20,6 @@ export default function Login() {
             const user = await response.json();
             console.log(user);
             console.log(username + ":" + password)
-            const auth = response.headers.get("WWW-Authenticate");
         } else {
             alert("Identification failed")
         }

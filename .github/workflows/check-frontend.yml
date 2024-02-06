@@ -18,23 +18,27 @@ jobs:
       - name: Setup NodeJS
         uses: actions/setup-node@v3
         with:
-          node-version: '18.x'
+          node-version: '18'
 
       - name: Install dependencies
         run: |
           cd MedHeadFrontEnd/medheadfrontend
           npm install
 
-      - name: Execute Node Tests
+      - name: Execute Node Build
         run: |
           cd MedHeadFrontEnd/medheadfrontend
-          npm run build --if-present
-          npm test
+          npm run build
 
       - name: Store production artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist-without-markdown
+          name: distribution
           path: |
-            dist
-            !dist/**/*.md
+            **/build/static/js/
+            **/build/static/css/
+
+      - name: Execute Node Tests
+        run: |
+          cd MedHeadFrontEnd/medheadfrontend
+          npm run test
