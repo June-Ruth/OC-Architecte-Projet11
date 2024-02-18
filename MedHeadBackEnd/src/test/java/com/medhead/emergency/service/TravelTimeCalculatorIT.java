@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 @Testcontainers
 @ActiveProfiles("test")
-public class TravelTimeCalculatorTest {
+public class TravelTimeCalculatorIT {
 
     @Container
     private static final MySQLContainer<?> SQL_CONTAINER = new MySQLContainer<>().withDatabaseName("medhead");
@@ -57,17 +57,15 @@ public class TravelTimeCalculatorTest {
     }
 
     @Test
-    void calculateTravelTimeBetweenTwoPointsTest() {
+    void calculateTravelTimeBetweenTwoPointsIT() {
         long travelTime = travelTimeCalculator.calculateTravelTimeBetweenTwoPoints(testPosition, medicalCenter3.getGeographicCoordinates());
         // Estimated time by Google Maps = 24 minutes
         assertTrue(1500000 < travelTime);
-        System.out.println(travelTime);
         assertTrue(travelTime < 2000000);
-        System.out.println(travelTime);
     }
 
     @Test
-    void findClosestMedicalCenterTest() {
+    void findClosestMedicalCenterIT() {
         MedicalCenterWithTravelTime medicalCenterWithTravelTime = travelTimeCalculator.findClosestMedicalCenter(testPosition, medicalCenters);
         assertEquals(medicalCenter1, medicalCenterWithTravelTime.getMedicalCenter());
     }

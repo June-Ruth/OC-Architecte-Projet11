@@ -1,3 +1,4 @@
+import './Emergency.css';
 import {useState} from "react";
 
 export default function Emergency({usernameP, passwordP}) {
@@ -32,8 +33,6 @@ export default function Emergency({usernameP, passwordP}) {
     }
 
     async function findHospital() {
-        console.log(username  + ":" +  password);
-
         const params = new URLSearchParams();
         params.append("speciality", speciality);
         params.append("latitude", latitude);
@@ -52,7 +51,6 @@ export default function Emergency({usernameP, passwordP}) {
 
         if(response.ok) {
             const medicalCenter = await response.json();
-            console.log(medicalCenter);
             setHospital(medicalCenter);
             emergencyInProgress();
         } else {
@@ -61,7 +59,7 @@ export default function Emergency({usernameP, passwordP}) {
     }
 
     return (
-        <div className="emergencyForm">
+        <div className="EmergencyForm">
             <h1>Emergency</h1>
             <form id="emergencyForm" hidden={isSelectedHospital}>
                 <label>Emergency Speciality

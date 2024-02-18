@@ -1,5 +1,6 @@
+import './Login.css';
 import {useState} from "react";
-import Emergency from "./Emergency";
+import Emergency from "../emergency/Emergency";
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(false);
@@ -17,19 +18,18 @@ export default function Login() {
 
         if(response.ok) {
             setIsLogin(true);
-            const user = await response.json();
-            console.log(user);
-            console.log(username + ":" + password)
+            await response.json();
         } else {
             alert("Identification failed")
         }
     }
 
     const loginForm = (
-        <div className="loginForm">
+        <div className="LoginForm">
             <h1>Please sign in</h1>
             <form id="loginForm">
                 <label>Username
+                    <br/>
                     <input id="username"
                            type="text"
                            name="username"
@@ -39,6 +39,7 @@ export default function Login() {
                 </label>
                 <br/>
                 <label>Password
+                    <br/>
                     <input id="password"
                            type="text"
                            name="password"
@@ -46,7 +47,7 @@ export default function Login() {
                            value={password}
                            onChange={event => setPassword(event.target.value)}/>
                 </label>
-                <br/>
+                <br/><br/>
                 <button id="signIn" type="button" onClick={signIn}>Sign in</button>
             </form>
         </div>

@@ -18,6 +18,8 @@ L’application est paramétrée pour tourner sur http://localhost/8081
 ### Tests
 Pour exécuter les tests en local, un environnement docker doit être disponible.
 Exécuter `./gradlew test` depuis le dossier MedHeadBackEnd.
+### Documentation
+Une documentation Swagger - OpenAPI des controllers est disponible sur http://localhost:8081/swagger-ui/index.html
 ## Application Frontend
 ### Préalables
 Pour fonctionner correctement, l’application frontend nécessite le lancement de l’application backend. L’hôte et le port de l’application backend doivent être déclarés dans un fichier .env à la racine du projet comme suit :
