@@ -51,7 +51,6 @@ public class EmergencyController {
         int reservationNumber = bedAvailabilityService.registerOneBedReservation(closestMedicalCenter.getMedicalCenter().getOrganisationId());
 
         ReservationDto reservation = ReservationDtoConverter.convertMedicalCenterWithTravelTimeToReservationDto(closestMedicalCenter, reservationNumber);
-        System.out.println(reservation);
 
         return ResponseEntity.ok(reservation);
     }

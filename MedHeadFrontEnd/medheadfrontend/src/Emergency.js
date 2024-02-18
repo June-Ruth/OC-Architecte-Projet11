@@ -32,8 +32,6 @@ export default function Emergency({usernameP, passwordP}) {
     }
 
     async function findHospital() {
-        console.log(username  + ":" +  password);
-
         const params = new URLSearchParams();
         params.append("speciality", speciality);
         params.append("latitude", latitude);
@@ -52,7 +50,6 @@ export default function Emergency({usernameP, passwordP}) {
 
         if(response.ok) {
             const medicalCenter = await response.json();
-            console.log(medicalCenter);
             setHospital(medicalCenter);
             emergencyInProgress();
         } else {

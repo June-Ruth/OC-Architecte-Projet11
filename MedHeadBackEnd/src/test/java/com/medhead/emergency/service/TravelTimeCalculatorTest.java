@@ -61,9 +61,7 @@ public class TravelTimeCalculatorTest {
         long travelTime = travelTimeCalculator.calculateTravelTimeBetweenTwoPoints(testPosition, medicalCenter3.getGeographicCoordinates());
         // Estimated time by Google Maps = 24 minutes
         assertTrue(1500000 < travelTime);
-        System.out.println(travelTime);
         assertTrue(travelTime < 2000000);
-        System.out.println(travelTime);
     }
 
     @Test
