@@ -14,7 +14,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
-import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.unauthenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Testcontainers
 @ActiveProfiles("test")
-public class LoginControllerTest {
+public class LoginControllerIT {
 
     @Autowired
     private MockMvc mvc;
@@ -41,7 +40,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void userLoginSuccessTest() throws Exception {
+    public void userLoginSuccessIT() throws Exception {
         mvc.perform(get("/login")
                 .queryParam("username", "user")
                 .queryParam("password", "user"))
@@ -49,7 +48,7 @@ public class LoginControllerTest {
     }
 
     @Test
-    public void userLoginFailedTest() throws Exception {
+    public void userLoginFailedIT() throws Exception {
         mvc.perform(get("/login")
                 .queryParam("username", "user")
                 .queryParam("password", "wrongpassword"))
@@ -58,24 +57,24 @@ public class LoginControllerTest {
 
     @Test
     @WithMockUser(roles = "USER")
-    public void userPageAccessWithAuthenticatedUserTest() throws Exception {
+    public void userPageAccessWithAuthenticatedUserIT() throws Exception {
         mvc.perform(get("/user")).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
-    public void userPageAccessWithUnauthenticatedUserTest() throws Exception {
+    public void userPageAccessWithUnauthenticatedUserIT() throws Exception {
         mvc.perform(get("/user")).andDo(print()).andExpect(status().isUnauthorized());
     }
 
     @Test
     @WithMockUser(roles = "ADMIN")
-    public void adminPageAccessWithAuthenticatedAdminTest() throws Exception {
+    public void adminPageAccessWithAuthenticatedAdminIT() throws Exception {
         mvc.perform(get("/admin")).andDo(print()).andExpect(status().isOk());
     }
 
     @Test
     @WithMockUser(roles = "USER")
-    public void adminPageAccessWithAuthenticatedUserTest() throws Exception {
+    public void adminPageAccessWithAuthenticatedUserIT() throws Exception {
         mvc.perform(get("/admin")).andDo(print()).andExpect(status().isForbidden());
     }
 

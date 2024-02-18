@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
 @ActiveProfiles("test")
-class EmergencyApplicationTests {
+class EmergencyApplicationIT {
 
     @Autowired
     private LoginController loginController;
@@ -33,7 +33,7 @@ class EmergencyApplicationTests {
     }
 
     @Test
-    void contextLoads() {
+    void contextLoadsIT() {
         assertThat(loginController).isNotNull();
     }
 
