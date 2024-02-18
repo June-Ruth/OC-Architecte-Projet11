@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.json:json:20231013")
 	implementation("com.google.guava:guava:33.0.0-jre")
 	implementation("com.graphhopper:graphhopper-core:8.0")
+	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 	runtimeOnly("com.mysql:mysql-connector-j")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
