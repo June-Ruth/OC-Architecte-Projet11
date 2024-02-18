@@ -1,3 +1,4 @@
+import './Emergency.css';
 import {useState} from "react";
 
 export default function Emergency({usernameP, passwordP}) {
@@ -58,7 +59,7 @@ export default function Emergency({usernameP, passwordP}) {
     }
 
     return (
-        <div className="emergencyForm">
+        <div className="EmergencyForm">
             <h1>Emergency</h1>
             <form id="emergencyForm" hidden={isSelectedHospital}>
                 <label>Emergency Speciality
