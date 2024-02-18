@@ -18,7 +18,7 @@ export default function Login() {
 
         if(response.ok) {
             setIsLogin(true);
-            const user = await response.json();
+            await response.json();
         } else {
             alert("Identification failed")
         }
